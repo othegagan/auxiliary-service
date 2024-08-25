@@ -4,7 +4,7 @@ import logger from '@/utils/logger';
 import { Request, Response } from 'express';
 
 export const webhook = async (req: Request, res: Response) => {
-    const body = req.validatedData;
+    const body = req.body;
 
     try {
         const response = { ...body };
