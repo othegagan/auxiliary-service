@@ -3,7 +3,7 @@
     "version": "2.0.0",
     "description": "",
     "type": "module",
-    "main": "server.ts",
+    "main": "src/server.ts",
     "scripts": {
         "dev": " env-cmd -f .env.development tsx watch ./src/server.ts",
         "qa": " env-cmd -f .env.qa tsx watch ./src/server.ts",
@@ -14,7 +14,8 @@
         "build": "tsc --project tsconfig.json",
         "serve-dev": "env-cmd -f .env.development cross-env NODE_ENV=development tsx -r tsconfig-paths/register src/server.ts",
         "serve-qa": "env-cmd -f .env.qa cross-env NODE_ENV=qa tsx -r tsconfig-paths/register src/server.ts",
-        "serve-prod": "env-cmd -f .env.production cross-env NODE_ENV=production tsx -r tsconfig-paths/register src/server.ts"
+        "serve-prod": "env-cmd -f .env.production cross-env NODE_ENV=production tsx -r tsconfig-paths/register src/server.ts",
+        "start": "node build/server.js"
     },
     "keywords": [],
     "author": "",
