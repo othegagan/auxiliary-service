@@ -6,7 +6,7 @@ import { ApiError } from './apiError';
 declare global {
     namespace Express {
         interface Request {
-            validatedData?: z.infer<typeof schema>;
+            validatedData?: any;
         }
     }
 }

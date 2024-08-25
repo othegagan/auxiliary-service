@@ -31,15 +31,15 @@ export const copyTuroVehicleData = async (req: Request, res: Response) => {
                 content.features = content.features.splice(0, content.features.length / 2);
 
                 elements = document.querySelectorAll('h1.seo-pages-l1y6tk-StyledText');
-                content.name = Array.from(elements).map((element) => element.innerText || '');
+                content.name = Array.from(elements).map((element: any) => element.innerText || '');
                 content.name = content.name.splice(0, content.name.length / 2);
 
                 elements = document.querySelectorAll('.seo-pages-12sl3fd');
-                content.masterdata = Array.from(elements).map((element) => element.innerText || '');
+                content.masterdata = Array.from(elements).map((element: any) => element.innerText || '');
                 content.masterdata = content.masterdata.splice(0, content.masterdata.length / 2);
 
                 elements = document.querySelectorAll('.e1wb47j10.seo-pages-lhv0k3');
-                const allwritings = Array.from(elements).map((element) => element.innerText);
+                const allwritings = Array.from(elements).map((element: any) => element.innerText);
 
                 const guidelinesElement = allwritings.find((text) => text.startsWith('GUIDELINES'));
                 if (guidelinesElement) {
