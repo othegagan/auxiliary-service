@@ -1,4 +1,4 @@
-import { copyTuroVehicleData, copyTuroVehicleDataServerless } from "@/controllers/copyTuroVehicleData.controller";
+import { copyTuroVehicleData, copyTuroVehicleDataServerless } from "@/controllers/turo/copyTuroVehicleData.controller";
 import { passwordAuth } from "@/middlewares/passwordAuth.middleware";
 import { zodValidate } from "@/utils/zodValidate";
 import express from "express";

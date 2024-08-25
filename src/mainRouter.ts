@@ -1,13 +1,13 @@
 // This file is used to export all routes
 import { Router } from "express";
-import { getAllChatHistoryFluxRouter, getAllChatHistoryRouter } from "./routes/chatHistory.route";
-import createConversationRouter from "./routes/createConversation.route";
-import getAllChatAssetsRouter from "./routes/getAllChatAssets.route";
-import getClientAccessTokenRouter from "./routes/getClientAccessToken.route";
-import getHostAccessTokenRouter from "./routes/getHostAccessToken.route";
-import { clientSendMessageFluxRouter, clientSendMessageRouter, hostSendMessageRouter, systemSendMessageRouter } from "./routes/message.route";
-import createTuroTripOnBundeeRouter from "./routes/createTuroTripOnBundee.route";
-import { copyTuroVehicleDataRouter, copyTuroVehicleDataServerlessRouter } from "./routes/copyTuroVehicleData.route";
+import { getAllChatHistoryFluxRouter, getAllChatHistoryRouter } from "./routes/chat/chatHistory.route";
+import createConversationRouter from "./routes/chat/createConversation.route";
+import getAllChatAssetsRouter from "./routes/chat/getAllChatAssets.route";
+import getClientAccessTokenRouter from "./routes/chat/getClientAccessToken.route";
+import getHostAccessTokenRouter from "./routes/chat/getHostAccessToken.route";
+import { clientSendMessageFluxRouter, clientSendMessageRouter, hostSendMessageRouter, systemSendMessageRouter } from "./routes/chat/message.route";
+import createTuroTripOnBundeeRouter from "./routes/turo/createTuroTripOnBundee.route";
+import { copyTuroVehicleDataRouter, copyTuroVehicleDataServerlessRouter } from "./routes/turo/copyTuroVehicleData.route";
 
 const mainRouter = Router();
 

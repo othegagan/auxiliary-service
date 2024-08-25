@@ -1,7 +1,7 @@
 import { env } from "@/configs/env";
 import logger from "@/utils/logger";
 import axios from "axios";
-import logUpdate from "./logUpdate.controller";
+import logUpdate from "../logUpdate.controller";
 import approveBooking from "./approveBooking.controller";
 
 export default async function createBooking(startDate: string, endDate: string, vehicleId: number) {

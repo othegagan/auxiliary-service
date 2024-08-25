@@ -1,4 +1,4 @@
-import { clientSendMessage, hostSendMessage, systemSendMessage } from '@/controllers/message.controller';
+import { clientSendMessage, hostSendMessage, systemSendMessage } from '@/controllers/chat/message.controller';
 import { passwordAuth } from '@/middlewares/passwordAuth.middleware';
 import tokenAuth from '@/middlewares/tokenAuth.middleware';
 import { zodValidate } from '@/utils/zodValidate';

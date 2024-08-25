@@ -1,4 +1,4 @@
-import { createTuroTripOnBundee } from "@/controllers/createTuroTripOnBundee.controller";
+import { createTuroTripOnBundee } from "@/controllers/turo/createTuroTripOnBundee.controller";
 import { passwordAuth } from "@/middlewares/passwordAuth.middleware";
 import { zodValidate } from "@/utils/zodValidate";
 import express from "express";
