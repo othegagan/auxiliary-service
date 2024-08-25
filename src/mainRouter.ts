@@ -8,6 +8,7 @@ import getHostAccessTokenRouter from './routes/chat/getHostAccessToken.route';
 import { clientSendMessageFluxRouter, clientSendMessageRouter, hostSendMessageRouter, systemSendMessageRouter } from './routes/chat/message.route';
 import { copyTuroVehicleDataRouter, copyTuroVehicleDataServerlessRouter } from './routes/turo/copyTuroVehicleData.route';
 import createTuroTripOnBundeeRouter from './routes/turo/createTuroTripOnBundee.route';
+import webhookRouter from './routes/webhook/webhook.route';
 
 const mainRouter = Router();
 
@@ -28,5 +29,7 @@ mainRouter.use('/createTuroTripOnBundee', createTuroTripOnBundeeRouter);
 
 mainRouter.use('/copyTuroVehicleData', copyTuroVehicleDataRouter);
 mainRouter.use('/copyTuroVehicleDataServerless', copyTuroVehicleDataServerlessRouter);
+
+mainRouter.use('/webhook', webhookRouter);
 
 export default mainRouter;

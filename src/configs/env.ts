@@ -24,7 +24,12 @@ const envSchema = z.object({
     BUNDEE_AUTH_TOKEN: z.string(),
     BUNDEE_BOOKING_SERVICE_BASE_URL: z.string(),
     BUNDEE_HOST_VEHICLE_BASE_URL: z.string(),
-    BUNDEE_AVAILABILITY_SERVICE_BASE_URL: z.string()
+    BUNDEE_AVAILABILITY_SERVICE_BASE_URL: z.string(),
+
+    // MeasureOne congfiguration
+    MEASUREONE_BASE_URL: z.string(),
+    MEASUREONE_BRARER_TOKEN: z.string(),
+    MEASUREONE_API_VERSION: z.string()
 });
 
 export const env = envSchema.parse(process.env);
