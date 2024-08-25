@@ -3,19 +3,21 @@
     "version": "2.0.0",
     "description": "",
     "type": "module",
-    "main": "src/server.ts",
+    "main": "src/index.ts",
     "scripts": {
-        "dev": " env-cmd -f .env.development tsx watch ./src/server.ts",
-        "qa": " env-cmd -f .env.qa tsx watch ./src/server.ts",
-        "prod": " env-cmd -f .env.production tsx watch ./src/server.ts",
+        "dev": " env-cmd -f .env.development tsx watch src/index.ts",
+        "qa": " env-cmd -f .env.qa tsx watch src/index.ts",
+        "prod": " env-cmd -f .env.production tsx watch src/index.ts",
         "lint": "biome check .",
         "lint-fix": "lint-staged",
         "prepare": "husky install",
-        "build": "tsc --project tsconfig.json",
-        "serve-dev": "env-cmd -f .env.development cross-env NODE_ENV=development tsx -r tsconfig-paths/register src/server.ts",
-        "serve-qa": "env-cmd -f .env.qa cross-env NODE_ENV=qa tsx -r tsconfig-paths/register src/server.ts",
-        "serve-prod": "env-cmd -f .env.production cross-env NODE_ENV=production tsx -r tsconfig-paths/register src/server.ts",
-        "start": "node build/server.js"
+        "build": "rimraf dist && tsc ",
+        "ts.check": "tsc --project tsconfig.json",
+        "add-build": "git add dist",
+        "serve-dev": "env-cmd -f .env.development cross-env NODE_ENV=development tsx -r tsconfig-paths/register src/index.ts",
+        "serve-qa": "env-cmd -f .env.qa cross-env NODE_ENV=qa tsx -r tsconfig-paths/register src/index.ts",
+        "serve-prod": "env-cmd -f .env.production cross-env NODE_ENV=production tsx -r tsconfig-paths/register src/index.ts",
+        "start": "node build/index.js"
     },
     "keywords": [],
     "author": "",
@@ -62,6 +64,7 @@
         "husky": "^9.1.5",
         "lint-staged": "^15.2.9",
         "nodemon": "^3.1.4",
+        "pre-commit": "^1.2.2",
         "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0",
         "tsx": "^4.17.0",
@@ -69,5 +72,6 @@
     },
     "lint-staged": {
         "*.{js,json,ts}": ["biome check --write --unsafe"]
-    }
+    },
+    "pre-commit": ["ts.check", "build", "add-build"]
 }
