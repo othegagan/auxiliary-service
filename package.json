@@ -29,6 +29,7 @@
         "moment-timezone": "^0.5.45",
         "morgan": "^1.10.0",
         "nightmare": "^3.0.2",
+        "node-schedule": "^2.1.1",
         "path": "^0.12.7",
         "puppeteer": "^23.1.1",
         "swagger-jsdoc": "^6.2.8",
@@ -48,6 +49,7 @@
         "@types/morgan": "^1.9.9",
         "@types/nightmare": "^2.10.9",
         "@types/node": "^22.5.0",
+        "@types/node-schedule": "^2.1.7",
         "@types/tz-lookup": "^6.1.2",
         "@types/zipcode-to-timezone": "^0.0.2",
         "cookie-parser": "^1.4.6",
@@ -58,6 +60,8 @@
         "typescript": "^5.5.4"
     },
     "lint-staged": {
-        "*.{js,json,ts}": ["biome check --write --unsafe"]
+        "*.{js,json,ts}": [
+            "biome check --write --unsafe"
+        ]
     }
 }

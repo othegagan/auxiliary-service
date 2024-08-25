@@ -57,3 +57,35 @@ export default async function createBooking(startDate: string, endDate: string, 
         logger.error(error);
     }
 }
+
+// import schedule from 'node-schedule';
+// import { handleTripCreation } from './path/to/your/tripHandler';
+
+// // Assuming tripsToBeCreated is defined somewhere in your app
+// const tripsToBeCreated = {};
+
+// // Schedule the job to run every minute
+// const job = schedule.scheduleJob('* * * * *', async () => {
+//     console.log('Running scheduled trip processing job');
+
+//     const keys = Object.keys(tripsToBeCreated);
+
+//     for (const key of keys) {
+//         try {
+//             await handleTripCreation(tripsToBeCreated[key]);
+//             delete tripsToBeCreated[key];
+//             console.log(`Processed and removed trip: ${key}`);
+//         } catch (error) {
+//             console.error(`Error processing trip ${key}:`, error);
+//             // Optionally, you might want to implement some retry logic here
+//         }
+//     }
+// });
+
+// // You can also add this to gracefully stop the job when the server is shutting down
+// process.on('SIGTERM', () => {
+//     job.cancel();
+// });
+
+// '*/30 * * * * *' would run every 30 seconds
+// '0 */5 * * * *' would run every 5 minutes
