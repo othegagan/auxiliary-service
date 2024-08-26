@@ -29,9 +29,6 @@ importers:
       express:
         specifier: ^4.19.2
         version: 4.19.2
-      express-async-handler:
-        specifier: ^1.2.0
-        version: 1.2.0
       firebase-admin:
         specifier: ^12.4.0
         version: 12.4.0
@@ -1222,9 +1219,6 @@ packages:
   execa@8.0.1:
     resolution: {integrity: sha512-VyhnebXciFV2DESc+p6B+y0LjSm0krU4OgJN44qFAhBY0TJ+1V61tYD2+wHusZ6F9n5K+vl8k0sTy7PEfV4qpg==}
     engines: {node: '>=16.17'}
-
-  express-async-handler@1.2.0:
-    resolution: {integrity: sha512-rCSVtPXRmQSW8rmik/AIb2P0op6l7r1fMW538yyvTMltCO4xQEWMmobfrIxN2V1/mVrgxB8Az3reYF6yUZw37w==}
 
   express@4.19.2:
     resolution: {integrity: sha512-5T6nhjsT+EOMzuck8JjBHARTHfMht0POzlA60WV2pMD3gyXw2LZnZ+ueGdNxG+0calOJcWKbpFcuzLZ91YWq9Q==}
@@ -4063,8 +4057,6 @@ snapshots:
       onetime: 6.0.0
       signal-exit: 4.1.0
       strip-final-newline: 3.0.0
-
-  express-async-handler@1.2.0: {}
 
   express@4.19.2:
     dependencies:
