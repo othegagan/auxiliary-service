@@ -1,7 +1,7 @@
-import { env } from '@/configs/env';
-import { ApiError } from '@/utils/apiError';
-import { ApiResponse } from '@/utils/apiResponse';
-import logger from '@/utils/logger';
+import { env } from '../../configs/env.js';
+import { ApiError } from '../../utils/apiError.js';
+import { ApiResponse } from '../../utils/apiResponse.js';
+import logger from '../../utils/logger.js';
 import axios from 'axios';
 export const insurance = async (req, res) => {
     const { firstName, lastName, email, externalId, phoneNumber } = req.validatedData;

@@ -1,5 +1,5 @@
 import { ZodError } from 'zod';
-import { ApiError } from './apiError';
+import { ApiError } from './apiError.js';
 // Utility function to format Zod errors
 const formatZodErrors = (error) => {
     return error.errors.map((err) => ({

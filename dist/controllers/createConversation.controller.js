@@ -1,8 +1,8 @@
-import { env } from '@/configs/env';
-import admin from '@/configs/firebase';
-import { twilioClient } from '@/configs/twilio';
-import { ApiError } from '@/utils/apiError';
-import logger from '@/utils/logger';
+import { env } from '../configs/env.js';
+import admin from '../configs/firebase.js';
+import { twilioClient } from '../configs/twilio.js';
+import { ApiError } from '../utils/apiError.js';
+import logger from '../utils/logger.js';
 const envPrefix = env.ENV_PREFIX || 'dev';
 // Main function to create a conversation
 export const createConversation = async (req, res) => {

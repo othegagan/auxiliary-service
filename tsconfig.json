@@ -1,20 +1,27 @@
 {
     "compilerOptions": {
-        "target": "ES2020",
-        "module": "ESNext",
-        "outDir": "dist",
+        "target": "esnext",
+        "esModuleInterop": true,
         "strict": false,
         "moduleResolution": "node",
-        "esModuleInterop": true,
-        "skipLibCheck": true,
+        "noEmit": true,
+
+        "outDir": "dist",
+
         "forceConsistentCasingInFileNames": false,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": true,
         "noImplicitAny": false,
-        "types": ["node", "express"],
+
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": ["./src/*"]
         }
     },
-    "include": ["src/**/*.ts", "api/**/*.ts"],
+    "tsc-alias": {
+        "resolveFullPaths": true,
+        "verbose": false
+    },
+    "include": ["src"],
     "exclude": ["node_modules"]
 }

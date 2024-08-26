@@ -1,8 +1,8 @@
-import { env } from '@/configs/env';
-import { ChatGrant } from '@/configs/twilio';
-import { ApiError } from '@/utils/apiError';
-import logger from '@/utils/logger';
-import AccessToken from 'twilio/lib/jwt/AccessToken';
+import { env } from '../../configs/env.js';
+import { ChatGrant } from '../../configs/twilio.js';
+import { ApiError } from '../../utils/apiError.js';
+import logger from '../../utils/logger.js';
+import AccessToken from 'twilio/lib/jwt/AccessToken.js';
 export const getHostAccessToken = async (req, res) => {
     const accountSid = env.TWILIO_ACCOUNT_SID;
     const twilioApiKey = env.TWILIO_API_KEY;

@@ -1,6 +1,6 @@
-import { getHostAccessToken } from '@/controllers/chat/getHostAccessToken.controller';
-import tokenAuth from '@/middlewares/tokenAuth.middleware';
-import { zodValidate } from '@/utils/zodValidate';
+import { getHostAccessToken } from '../../controllers/chat/getHostAccessToken.controller.js';
+import tokenAuth from '../../middlewares/tokenAuth.middleware.js';
+import { zodValidate } from '../../utils/zodValidate.js';
 import express from 'express';
 import { z } from 'zod';
 const getHostAccessTokenRouter = express.Router();

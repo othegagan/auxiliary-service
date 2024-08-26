@@ -1,7 +1,7 @@
-import { env } from '@/configs/env';
-import admin from '@/configs/firebase';
-import { ApiError } from '@/utils/apiError';
-import logger from '@/utils/logger';
+import { env } from '../../configs/env.js';
+import admin from '../../configs/firebase.js';
+import { ApiError } from '../../utils/apiError.js';
+import logger from '../../utils/logger.js';
 const envPrefix = env.ENV_PREFIX || 'dev';
 export const getAllChatAssets = async (req, res) => {
     const { tripId } = req.validatedData;

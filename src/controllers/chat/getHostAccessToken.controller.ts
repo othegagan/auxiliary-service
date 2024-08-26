@@ -3,7 +3,7 @@ import { ChatGrant } from '@/configs/twilio';
 import { ApiError } from '@/utils/apiError';
 import logger from '@/utils/logger';
 import { Request, Response } from 'express';
-import AccessToken from 'twilio/lib/jwt/AccessToken';
+import AccessToken from 'twilio/lib/jwt/AccessToken.js';
 
 export const getHostAccessToken = async (req: Request, res: Response) => {
     const accountSid = env.TWILIO_ACCOUNT_SID;

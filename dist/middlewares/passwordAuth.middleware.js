@@ -1,5 +1,5 @@
-import { env } from '@/configs/env';
-import { ApiError } from '@/utils/apiError';
+import { env } from '../configs/env.js';
+import { ApiError } from '../utils/apiError.js';
 export const passwordAuth = (req, res, next) => {
     const { password } = req.body;
     if (password !== env.PASSWORD) {

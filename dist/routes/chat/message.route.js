@@ -1,7 +1,7 @@
-import { clientSendMessage, hostSendMessage, systemSendMessage } from '@/controllers/chat/message.controller';
-import { passwordAuth } from '@/middlewares/passwordAuth.middleware';
-import tokenAuth from '@/middlewares/tokenAuth.middleware';
-import { zodValidate } from '@/utils/zodValidate';
+import { clientSendMessage, hostSendMessage, systemSendMessage } from '../../controllers/chat/message.controller.js';
+import { passwordAuth } from '../../middlewares/passwordAuth.middleware.js';
+import tokenAuth from '../../middlewares/tokenAuth.middleware.js';
+import { zodValidate } from '../../utils/zodValidate.js';
 import express from 'express';
 import { z } from 'zod';
 const schema = z.object({

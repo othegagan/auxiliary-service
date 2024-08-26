@@ -1,6 +1,6 @@
-import { getVehicleSpecificDates } from '@/controllers/getVehicleSpecificDates.controller';
-import { passwordAuth } from '@/middlewares/passwordAuth.middleware';
-import { zodValidate } from '@/utils/zodValidate';
+import { getVehicleSpecificDates } from '../controllers/getVehicleSpecificDates.controller.js';
+import { passwordAuth } from '../middlewares/passwordAuth.middleware.js';
+import { zodValidate } from '../utils/zodValidate.js';
 import express from 'express';
 import { z } from 'zod';
 const schema = z.object({

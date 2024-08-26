@@ -1,6 +1,6 @@
-import { ApiError } from '@/utils/apiError';
-import { ApiResponse } from '@/utils/apiResponse';
-import logger from '@/utils/logger';
+import { ApiError } from '../../utils/apiError.js';
+import { ApiResponse } from '../../utils/apiResponse.js';
+import logger from '../../utils/logger.js';
 export const webhook = async (req, res) => {
     const body = req.body;
     try {

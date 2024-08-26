@@ -1,6 +1,6 @@
-import { ApiError } from './apiError';
-import { ApiResponse } from './apiResponse';
-import logger from './logger';
+import { ApiError } from './apiError.js';
+import { ApiResponse } from './apiResponse.js';
+import logger from './logger.js';
 export const errorHandler = (err, req, res, next) => {
     if (err instanceof ApiError) {
         const { statusCode, message, errors, data } = err;

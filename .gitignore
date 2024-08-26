@@ -1,5 +1,7 @@
-node_modules
-.vscode
-.env.*
+# Dependency directories
+node_modules/
 
-app.log
+# Environment variables
+.env.*
+.vscode
+

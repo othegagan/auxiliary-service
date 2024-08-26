@@ -1,7 +1,7 @@
-import { chatHistory } from '@/controllers/chat/chatHistory.controller';
-import { passwordAuth } from '@/middlewares/passwordAuth.middleware';
-import tokenAuth from '@/middlewares/tokenAuth.middleware';
-import { zodValidate } from '@/utils/zodValidate';
+import { chatHistory } from '../../controllers/chat/chatHistory.controller.js';
+import { passwordAuth } from '../../middlewares/passwordAuth.middleware.js';
+import tokenAuth from '../../middlewares/tokenAuth.middleware.js';
+import { zodValidate } from '../../utils/zodValidate.js';
 import express from 'express';
 import { z } from 'zod';
 const schema = z.object({

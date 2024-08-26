@@ -1,7 +1,7 @@
-import { env } from '@/configs/env';
-import approveBooking from '@/controllers/booking/approveBooking.controller';
-import logUpdate from '@/controllers/logUpdate.controller';
-import logger from '@/utils/logger';
+import { env } from '../../configs/env.js';
+import approveBooking from '../../controllers/booking/approveBooking.controller.js';
+import logUpdate from '../../controllers/logUpdate.controller.js';
+import logger from '../../utils/logger.js';
 import axios from 'axios';
 export default async function createBooking(startDate, endDate, vehicleId) {
     let days = (new Date(startDate).valueOf() - new Date(endDate).valueOf()) / (1000 * 60 * 60 * 24);

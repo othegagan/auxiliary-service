@@ -1,6 +1,6 @@
 import logger from '@/utils/logger';
 import { Request, Response } from 'express';
-import Nightmare from 'nightmare';
+// import Nightmare from 'nightmare';
 import puppeteer from 'puppeteer';
 
 interface ScrapedContent {
@@ -14,43 +14,43 @@ interface ScrapedContent {
 export const copyTuroVehicleData = async (req: Request, res: Response) => {
     try {
         const { turolink } = req.body;
-        const nightmare = new Nightmare({ show: false });
+        // const nightmare = new Nightmare({ show: false });
 
-        const result: ScrapedContent = await nightmare
-            .goto(turolink)
-            .wait('.seo-pages-19qxpf6-StyledText')
-            .evaluate(() => {
-                const content: Partial<ScrapedContent> = {};
+        // const result: ScrapedContent = await nightmare
+        //     .goto(turolink)
+        //     .wait('.seo-pages-19qxpf6-StyledText')
+        //     .evaluate(() => {
+        //         const content: Partial<ScrapedContent> = {};
 
-                let elements = document.querySelectorAll('.seo-pages-19qxpf6-StyledText');
-                content.description = Array.from(elements).map((element) => element.textContent || '');
-                content.description = content.description.splice(0, content.description.length / 2);
+        //         let elements = document.querySelectorAll('.seo-pages-19qxpf6-StyledText');
+        //         content.description = Array.from(elements).map((element) => element.textContent || '');
+        //         content.description = content.description.splice(0, content.description.length / 2);
 
-                elements = document.querySelectorAll('.seo-pages-1qmfcgr-MediaObjectBody');
-                content.features = Array.from(elements).map((element) => element.textContent || '');
-                content.features = content.features.splice(0, content.features.length / 2);
+        //         elements = document.querySelectorAll('.seo-pages-1qmfcgr-MediaObjectBody');
+        //         content.features = Array.from(elements).map((element) => element.textContent || '');
+        //         content.features = content.features.splice(0, content.features.length / 2);
 
-                elements = document.querySelectorAll('h1.seo-pages-l1y6tk-StyledText');
-                content.name = Array.from(elements).map((element: any) => element.innerText || '');
-                content.name = content.name.splice(0, content.name.length / 2);
+        //         elements = document.querySelectorAll('h1.seo-pages-l1y6tk-StyledText');
+        //         content.name = Array.from(elements).map((element: any) => element.innerText || '');
+        //         content.name = content.name.splice(0, content.name.length / 2);
 
-                elements = document.querySelectorAll('.seo-pages-12sl3fd');
-                content.masterdata = Array.from(elements).map((element: any) => element.innerText || '');
-                content.masterdata = content.masterdata.splice(0, content.masterdata.length / 2);
+        //         elements = document.querySelectorAll('.seo-pages-12sl3fd');
+        //         content.masterdata = Array.from(elements).map((element: any) => element.innerText || '');
+        //         content.masterdata = content.masterdata.splice(0, content.masterdata.length / 2);
 
-                elements = document.querySelectorAll('.e1wb47j10.seo-pages-lhv0k3');
-                const allwritings = Array.from(elements).map((element: any) => element.innerText);
+        //         elements = document.querySelectorAll('.e1wb47j10.seo-pages-lhv0k3');
+        //         const allwritings = Array.from(elements).map((element: any) => element.innerText);
 
-                const guidelinesElement = allwritings.find((text) => text.startsWith('GUIDELINES'));
-                if (guidelinesElement) {
-                    content.guidelines = guidelinesElement.split('GUIDELINES')[1];
-                }
+        //         const guidelinesElement = allwritings.find((text) => text.startsWith('GUIDELINES'));
+        //         if (guidelinesElement) {
+        //             content.guidelines = guidelinesElement.split('GUIDELINES')[1];
+        //         }
 
-                return content;
-            })
-            .end();
+        //         return content;
+        //     })
+        //     .end();
 
-        res.status(200).json({ response: result });
+        res.status(200).json({ response: 'ok' });
     } catch (error) {
         logger.error(`Scraping failed: ${error}`);
         res.status(500).json({ response: error });

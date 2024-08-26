@@ -1,5 +1,5 @@
-import { env } from '@/configs/env';
-import logger from '@/utils/logger';
+import { env } from '../configs/env.js';
+import logger from '../utils/logger.js';
 import axios from 'axios';
 export default async function vehicleFeautersById(vehicleId) {
     const url = `${env.BUNDEE_AVAILABILITY_SERVICE_BASE_URL}/v1/availability/getVehiclesnFeaturesById`;

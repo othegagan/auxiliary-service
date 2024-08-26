@@ -1,7 +1,7 @@
-import admin from '@/configs/firebase';
-import { twilioClient } from '@/configs/twilio';
-import { ApiError } from '@/utils/apiError';
-import logger from '@/utils/logger';
+import admin from '../../configs/firebase.js';
+import { twilioClient } from '../../configs/twilio.js';
+import { ApiError } from '../../utils/apiError.js';
+import logger from '../../utils/logger.js';
 const envPrefix = process.env.ENV_PREFIX || 'dev';
 export const chatHistory = async (req, res) => {
     const { tripId, count } = req.validatedData;

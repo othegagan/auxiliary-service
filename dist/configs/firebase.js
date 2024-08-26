@@ -1,6 +1,6 @@
-import logger from '@/utils/logger';
+import logger from '../utils/logger.js';
 import admin from 'firebase-admin';
-import { env } from './env';
+import { env } from './env.js';
 const serviceAccount = {
     clientEmail: env.FIREBASE_CLIENT_EMAIL,
     privateKey: env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),

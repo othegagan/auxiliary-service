@@ -1,6 +1,6 @@
-import { createConversation } from '@/controllers/createConversation.controller';
-import { passwordAuth } from '@/middlewares/passwordAuth.middleware';
-import { zodValidate } from '@/utils/zodValidate';
+import { createConversation } from '../../controllers/createConversation.controller.js';
+import { passwordAuth } from '../../middlewares/passwordAuth.middleware.js';
+import { zodValidate } from '../../utils/zodValidate.js';
 import express from 'express';
 import { z } from 'zod';
 const createConversationRouter = express.Router();

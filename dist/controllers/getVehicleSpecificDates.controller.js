@@ -1,5 +1,5 @@
-import { ApiError } from '@/utils/apiError';
-import logger from '@/utils/logger';
+import { ApiError } from '../utils/apiError.js';
+import logger from '../utils/logger.js';
 export const getVehicleSpecificDates = async (req, res) => {
     const { localDateAndStartTimeArr, localDateAndEndTimeArr, zipCodeArr, localTimeZoneOffsetInMinutes } = req.validatedData;
     try {

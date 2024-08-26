@@ -1,7 +1,7 @@
-import { env } from '@/configs/env';
-import logger from '@/utils/logger';
+import { env } from '../../configs/env.js';
+import logger from '../../utils/logger.js';
 import axios from 'axios';
-import logUpdate from '../logUpdate.controller';
+import logUpdate from '../logUpdate.controller.js';
 export default async function approveBooking(tripId) {
     const url = `${env.BUNDEE_BOOKING_SERVICE_BASE_URL}/v1/booking/updateReservationApproval`;
     const payload = {

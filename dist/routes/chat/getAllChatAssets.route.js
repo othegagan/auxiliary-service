@@ -1,6 +1,6 @@
-import { getAllChatAssets } from '@/controllers/chat/getAllChatAssets.controller';
-import { passwordAuth } from '@/middlewares/passwordAuth.middleware';
-import { zodValidate } from '@/utils/zodValidate';
+import { getAllChatAssets } from '../../controllers/chat/getAllChatAssets.controller.js';
+import { passwordAuth } from '../../middlewares/passwordAuth.middleware.js';
+import { zodValidate } from '../../utils/zodValidate.js';
 import express from 'express';
 import { z } from 'zod';
 const getAllChatAssetsRouter = express.Router();
