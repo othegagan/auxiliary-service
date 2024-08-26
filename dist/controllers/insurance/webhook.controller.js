@@ -5,7 +5,7 @@ export const webhook = async (req, res) => {
     const body = req.body;
     try {
         const response = { ...body };
-        res.status(200).json(new ApiResponse(200, response, 'Webhook received successfully'));
+        res.status(200).json(new ApiResponse(200, response, 'Webhook event received successfully'));
     }
     catch (error) {
         logger.error(error.message);
