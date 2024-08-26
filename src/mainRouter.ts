@@ -8,9 +8,9 @@ import { clientSendMessageFluxRouter, clientSendMessageRouter, hostSendMessageRo
 import { copyTuroVehicleDataRouter, copyTuroVehicleDataServerlessRouter } from '@/routes/turo/copyTuroVehicleData.route';
 import webhookRouter from '@/routes/webhook/webhook.route';
 import { Router } from 'express';
+import { createUserRouter, getUserByEmailRouter, updateUserRouter, verfiyUserTokenRouter } from './routes/others/firebaseUser.route';
 import getVehicleSpecificDatesRouter from './routes/others/getVehicleSpecificDates.route';
 import { getByZipCodeRouter, getZipCodeRouter } from './routes/others/latLongToZipCodes';
-import { createUserRouter, getUserByEmailRouter, updateUserRouter, verfiyUserTokenRouter } from './routes/others/firebaseUser.route';
 
 const mainRouter = Router();
 

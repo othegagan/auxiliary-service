@@ -28,7 +28,7 @@ getByZipCodeRouter.post(
     asyncHandler(async (req: Request, res: Response) => {
         const { lat, lng } = req.validatedData;
         const zipcodes = (await findNearByZipcodesByLatLong(lat, lng)) || [];
-        res.status(200).json({zipcodes});
+        res.status(200).json({ zipcodes });
     })
 );
 
