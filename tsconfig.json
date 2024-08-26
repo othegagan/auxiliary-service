@@ -12,11 +12,14 @@
         "skipLibCheck": true,
         "noUncheckedIndexedAccess": true,
         "noImplicitAny": false,
+        "resolveJsonModule": true,
 
         "baseUrl": ".",
         "paths": {
             "@/*": ["./src/*"]
-        }
+        },
+        "module": "commonjs",
+        "sourceMap": true
     },
     "tsc-alias": {
         "resolveFullPaths": true,

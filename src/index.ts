@@ -1,9 +1,8 @@
 import { env } from '@/configs/env';
-import { specs, swaggerUi } from '@/configs/swagger';
+import { swaggerUi, specs } from './configs/swagger';
 import { errorHandler } from '@/utils/errorHandler';
 import logger, { morganMiddleware } from '@/utils/logger';
 import cookieParser from 'cookie-parser';
-// import dotenv from "dotenv";
 import cors from 'cors';
 import express, { type Application } from 'express';
 import mainRouter from './mainRouter';

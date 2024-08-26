@@ -1,7 +1,13 @@
-import { ApiError } from '../../utils/apiError.js';
-import { formatDateAndTime } from '../../utils/lib.js';
-import logger from '../../utils/logger.js';
-export const getVehicleSpecificDates = async (req, res) => {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getVehicleSpecificDates = void 0;
+const apiError_1 = require("../../utils/apiError.js");
+const lib_1 = require("../../utils/lib.js");
+const logger_1 = __importDefault(require("../../utils/logger.js"));
+const getVehicleSpecificDates = async (req, res) => {
     const { localDateAndStartTimeArr, localDateAndEndTimeArr, zipCodeArr, localTimeZoneOffsetInMinutes } = req.validatedData;
     try {
         const sendingStartDateArr = [];
@@ -13,11 +19,11 @@ export const getVehicleSpecificDates = async (req, res) => {
             const startDate = localDateAndStartTimeArr[i];
             const endDate = localDateAndEndTimeArr[i];
             // Adjust and format the dates using the provided formatDateAndTime function
-            const sendingStartDate = formatDateAndTime(startDate, zipCode);
-            const sendingEndDate = formatDateAndTime(endDate, zipCode);
+            const sendingStartDate = (0, lib_1.formatDateAndTime)(startDate, zipCode);
+            const sendingEndDate = (0, lib_1.formatDateAndTime)(endDate, zipCode);
             // Inverting the time zone offset to get receiving dates
-            const receivingStartDate = formatDateAndTime(startDate, zipCode);
-            const receivingEndDate = formatDateAndTime(endDate, zipCode);
+            const receivingStartDate = (0, lib_1.formatDateAndTime)(startDate, zipCode);
+            const receivingEndDate = (0, lib_1.formatDateAndTime)(endDate, zipCode);
             sendingStartDateArr.push(sendingStartDate);
             sendingEndDateArr.push(sendingEndDate);
             receivingStartDateArr.push(receivingStartDate);
@@ -32,7 +38,9 @@ export const getVehicleSpecificDates = async (req, res) => {
         });
     }
     catch (error) {
-        logger.error(error.message);
-        res.status(500).json(new ApiError(500, error.message, error));
+        logger_1.default.error(error.message);
+        res.status(500).json(new apiError_1.ApiError(500, error.message, error));
     }
 };
+exports.getVehicleSpecificDates = getVehicleSpecificDates;
+//# sourceMappingURL=getVehicleSpecificDates.controller.js.map

@@ -1,7 +1,13 @@
-import logger from '../../utils/logger.js';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.copyTuroVehicleDataServerless = exports.copyTuroVehicleData = void 0;
+const logger_1 = __importDefault(require("../../utils/logger.js"));
 // import Nightmare from 'nightmare';
-import puppeteer from 'puppeteer';
-export const copyTuroVehicleData = async (req, res) => {
+const puppeteer_1 = __importDefault(require("puppeteer"));
+const copyTuroVehicleData = async (req, res) => {
     try {
         const { turolink } = req.body;
         // const nightmare = new Nightmare({ show: false });
@@ -34,14 +40,15 @@ export const copyTuroVehicleData = async (req, res) => {
         res.status(200).json({ response: 'ok' });
     }
     catch (error) {
-        logger.error(`Scraping failed: ${error}`);
+        logger_1.default.error(`Scraping failed: ${error}`);
         res.status(500).json({ response: error });
     }
 };
-export const copyTuroVehicleDataServerless = async (req, res) => {
+exports.copyTuroVehicleData = copyTuroVehicleData;
+const copyTuroVehicleDataServerless = async (req, res) => {
     try {
         const { turolink } = req.body;
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer_1.default.launch();
         const page = await browser.newPage();
         await page.goto(turolink);
         // Example: Extract text from an element
@@ -52,7 +59,9 @@ export const copyTuroVehicleDataServerless = async (req, res) => {
         res.status(200).json({ content });
     }
     catch (error) {
-        logger.error(`Scraping failed: ${error}`);
+        logger_1.default.error(`Scraping failed: ${error}`);
         res.status(500).json({ response: error });
     }
 };
+exports.copyTuroVehicleDataServerless = copyTuroVehicleDataServerless;
+//# sourceMappingURL=copyTuroVehicleData.controller.js.map

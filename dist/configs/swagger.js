@@ -1,27 +1,42 @@
-// swagger.js
-import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
-// Swagger definition
-const swaggerDefinition = {
-    openapi: '3.0.0',
-    info: {
-        title: 'API Documentation',
-        version: '1.0.0',
-        description: 'API documentation for your Express application'
-    },
-    servers: [
-        {
-            url: `http://localhost:${process.env.PORT || 3000}`,
-            description: 'Development server'
-        }
-    ]
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-// Options for the swagger docs
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.specs = exports.swaggerUi = void 0;
+const swagger_autogen_1 = __importDefault(require("swagger-autogen"));
+const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+exports.swaggerUi = swagger_ui_express_1.default;
 const options = {
-    swaggerDefinition,
-    // Path to the API docs
-    apis: ['./src/routes/*.ts'] // Adjust the path to match your routes
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'MyBundee Auxiliary APIs',
+            version: '2.0.0',
+            description: 'Auxiliary APIs for MyBundee. Includes chat, turo vehicle data, firebase admin operations and others.'
+        },
+        servers: [
+            {
+                url: `http://localhost:${process.env.PORT || 3000}`,
+                description: 'Development server'
+            }
+        ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT'
+                }
+            }
+        }
+    },
+    apis: ['./src/routes/**/*.ts'] // Path to the API docs
 };
-// Initialize swagger-jsdoc
-const specs = swaggerJsdoc(options);
-export { swaggerUi, specs };
+const specs = (0, swagger_jsdoc_1.default)(options);
+exports.specs = specs;
+const outputFile = './src/configs/swagger-output.json';
+const endpointsFiles = ['./src/mainRouter.ts'];
+(0, swagger_autogen_1.default)()(outputFile, endpointsFiles, options.definition);
+//# sourceMappingURL=swagger.js.map

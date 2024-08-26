@@ -1,0 +1,8 @@
+{
+    "watch": ["src"],
+    "ext": "ts",
+    "exec": "npm run swagger-autogen && tsx src/index.ts",
+    "events": {
+        "restart": "echo 'Application restarted due to changes...' && npm run swagger-autogen"
+    }
+}

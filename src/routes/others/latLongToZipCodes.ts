@@ -4,6 +4,38 @@ import { zodValidate } from '@/utils/zodValidate';
 import express, { Request, Response } from 'express';
 import { z } from 'zod';
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     LatLngInput:
+ *       type: object
+ *       required:
+ *         - lat
+ *         - lng
+ *       properties:
+ *         lat:
+ *           type: string
+ *           description: Latitude
+ *         lng:
+ *           type: string
+ *           description: Longitude
+ *     ZipCodeResponse:
+ *       type: object
+ *       properties:
+ *         zipcode:
+ *           type: string
+ *           description: The zipcode for the given latitude and longitude
+ *     ZipCodesResponse:
+ *       type: object
+ *       properties:
+ *         zipcodes:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Array of nearby zipcodes
+ */
+
 const schema = z.object({
     lat: z.string({ required_error: 'lat is required' }),
     lng: z.string({ required_error: 'lng is required' })
@@ -12,6 +44,30 @@ const schema = z.object({
 const getZipCodeRouter = express.Router();
 const getByZipCodeRouter = express.Router();
 
+/**
+ * @swagger
+ * /getZipCode:
+ *   post:
+ *     summary: Get zipcode for a given latitude and longitude
+ *     tags: [Others]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LatLngInput'
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved zipcode
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ZipCodeResponse'
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
 getZipCodeRouter.post(
     '/',
     zodValidate(schema),
@@ -22,6 +78,30 @@ getZipCodeRouter.post(
     })
 );
 
+/**
+ * @swagger
+ * /getByZipCode:
+ *   post:
+ *     summary: Get nearby zipcodes for a given latitude and longitude
+ *     tags: [Others]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LatLngInput'
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved nearby zipcodes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ZipCodesResponse'
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
 getByZipCodeRouter.post(
     '/',
     zodValidate(schema),

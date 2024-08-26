@@ -1,11 +1,17 @@
-import { env } from '../../configs/env.js';
-import admin from '../../configs/firebase.js';
-import { twilioClient } from '../../configs/twilio.js';
-import { ApiError } from '../../utils/apiError.js';
-import logger from '../../utils/logger.js';
-const envPrefix = env.ENV_PREFIX || 'dev';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createConversation = void 0;
+const env_1 = require("../../configs/env.js");
+const firebase_1 = __importDefault(require("../../configs/firebase.js"));
+const twilio_1 = require("../../configs/twilio.js");
+const apiError_1 = require("../../utils/apiError.js");
+const logger_1 = __importDefault(require("../../utils/logger.js"));
+const envPrefix = env_1.env.ENV_PREFIX || 'dev';
 // Main function to create a conversation
-export const createConversation = async (req, res) => {
+const createConversation = async (req, res) => {
     const { tripId } = req.validatedData;
     try {
         const service = await createService(tripId);
@@ -16,13 +22,14 @@ export const createConversation = async (req, res) => {
         res.status(200).json({ service, conversation, host, clientParticipant });
     }
     catch (error) {
-        logger.error(error.message);
-        res.status(500).json(new ApiError(500, error.message, error));
+        logger_1.default.error(error.message);
+        res.status(500).json(new apiError_1.ApiError(500, error.message, error));
     }
 };
+exports.createConversation = createConversation;
 // Function to create a service
 const createService = async (tripId) => {
-    return await twilioClient.conversations.v1.services.create({
+    return await twilio_1.twilioClient.conversations.v1.services.create({
         friendlyName: `${envPrefix}_service_${tripId}`,
         //@ts-ignore
         uniqueName: `${envPrefix}_service_${tripId}`
@@ -30,14 +37,14 @@ const createService = async (tripId) => {
 };
 // Function to create a conversation in a service
 const createConversationService = async (serviceSid, tripId) => {
-    return await twilioClient.conversations.v1.services(serviceSid).conversations.create({
+    return await twilio_1.twilioClient.conversations.v1.services(serviceSid).conversations.create({
         friendlyName: `${envPrefix}_conversation_${tripId}`,
         uniqueName: `${envPrefix}_conversation_${tripId}`
     });
 };
 // Function to create a participant in a conversation
 const createParticipant = async (serviceSid, conversationSid, role) => {
-    return await twilioClient.conversations.v1
+    return await twilio_1.twilioClient.conversations.v1
         .services(serviceSid)
         .conversations(conversationSid)
         .participants.create({
@@ -47,7 +54,7 @@ const createParticipant = async (serviceSid, conversationSid, role) => {
 };
 // Function to save IDs to Firebase
 const saveIdsToFB = async (tripId, serviceId, conversationId, hostId, clientId) => {
-    const db = admin.firestore();
+    const db = firebase_1.default.firestore();
     const docRef = db.collection(`${envPrefix}_id_${tripId}`).doc(`${envPrefix}_id_${tripId}`);
     await docRef.set({
         serviceId,
@@ -56,3 +63,4 @@ const saveIdsToFB = async (tripId, serviceId, conversationId, hostId, clientId) 
         clientId
     });
 };
+//# sourceMappingURL=createConversation.controller.js.map

@@ -1,9 +1,20 @@
-import { parseZonedDateTime } from '@internationalized/date';
-import gps from 'gps2zip';
-import moment from 'moment-timezone';
-import tzlookup from 'tz-lookup';
-import zipToTimeZone from 'zipcode-to-timezone';
-import zipCodesNearby from 'zipcodes-nearby';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.convertToTimeZoneISO = convertToTimeZoneISO;
+exports.formatDateAndTime = formatDateAndTime;
+exports.findTimeZoneByZipcode = findTimeZoneByZipcode;
+exports.findTimezoneOfLatLong = findTimezoneOfLatLong;
+exports.findNearByZipcodesByLatLong = findNearByZipcodesByLatLong;
+exports.findZipcodeOfLatLong = findZipcodeOfLatLong;
+const date_1 = require("@internationalized/date");
+const gps2zip_1 = __importDefault(require("gps2zip"));
+const moment_timezone_1 = __importDefault(require("moment-timezone"));
+const tz_lookup_1 = __importDefault(require("tz-lookup"));
+const zipcode_to_timezone_1 = __importDefault(require("zipcode-to-timezone"));
+const zipcodes_nearby_1 = __importDefault(require("zipcodes-nearby"));
 /**
  * Converts a given date, time, and zip code to a specific zipcode timezone ISO string.
 
@@ -12,10 +23,10 @@ import zipCodesNearby from 'zipcodes-nearby';
  * @returns The converted date and time in ISO format with the zipcode timezone.
  * @throws Will throw an error if the timezone cannot be determined from the zip code.
  */
-export function convertToTimeZoneISO(date, time, zipCode) {
+function convertToTimeZoneISO(date, time, zipCode) {
     const dateString = `${date}T${time}`;
     const timeZone = findTimeZoneByZipcode(zipCode);
-    const converedCarDate = parseZonedDateTime(`${dateString}[${timeZone}]`).toAbsoluteString();
+    const converedCarDate = (0, date_1.parseZonedDateTime)(`${dateString}[${timeZone}]`).toAbsoluteString();
     return converedCarDate;
 }
 /**
@@ -26,10 +37,10 @@ export function convertToTimeZoneISO(date, time, zipCode) {
  * @param format - Desired format of the converted date. ex: 'yyyy-MM-DD'. or 'YYYY-MM-DDTHH:mm:ss'
  * @returns The converted date and time in local zipcode time zone format.
  */
-export function formatDateAndTime(date, zipCode, format = 'ddd, MMM DD YYYY | h:mm A z') {
+function formatDateAndTime(date, zipCode, format = 'ddd, MMM DD YYYY | h:mm A z') {
     if (!date || !zipCode)
         return '';
-    const endTimeUTC = moment.utc(date);
+    const endTimeUTC = moment_timezone_1.default.utc(date);
     const timeZone = findTimeZoneByZipcode(zipCode);
     const timeInTimeZone = endTimeUTC.tz(timeZone);
     return timeInTimeZone.format(format || 'ddd, MMM DD YYYY | h:mm A z');
@@ -41,8 +52,8 @@ export function formatDateAndTime(date, zipCode, format = 'ddd, MMM DD YYYY | h:
  * @returns timezone of the zip code.
  * @returns null if the timezone cannot be determined from the zip code.
  */
-export function findTimeZoneByZipcode(zipCode) {
-    const timeZone = zipToTimeZone.lookup(zipCode); // 73301, (Los angeles zip code : 90274) (MST : 85323)
+function findTimeZoneByZipcode(zipCode) {
+    const timeZone = zipcode_to_timezone_1.default.lookup(zipCode); // 73301, (Los angeles zip code : 90274) (MST : 85323)
     return timeZone || null;
 }
 /**
@@ -53,10 +64,10 @@ export function findTimeZoneByZipcode(zipCode) {
  * @returns timezone of the location.
  * @returns null if the timezone cannot be determined from the location.
  */
-export function findTimezoneOfLatLong(latitude, longitude) {
+function findTimezoneOfLatLong(latitude, longitude) {
     if (!latitude || !longitude)
         return '';
-    const timeZone = tzlookup(latitude, longitude);
+    const timeZone = (0, tz_lookup_1.default)(latitude, longitude);
     return timeZone || null;
 }
 /**
@@ -67,7 +78,7 @@ export function findTimezoneOfLatLong(latitude, longitude) {
  * @returns near by zip codes.
  * @returns empty array if the zip codes cannot be determined from the location.
  */
-export function findNearByZipcodesByLatLong(latitude, longitude) {
+function findNearByZipcodesByLatLong(latitude, longitude) {
     if (!latitude || !longitude)
         return [];
     const options = {
@@ -75,7 +86,7 @@ export function findNearByZipcodesByLatLong(latitude, longitude) {
         latitude
     };
     const radius = 24000;
-    const nearbyZipcodes = zipCodesNearby.near(options, radius);
+    const nearbyZipcodes = zipcodes_nearby_1.default.near(options, radius);
     return nearbyZipcodes || [];
 }
 /**
@@ -86,9 +97,10 @@ export function findNearByZipcodesByLatLong(latitude, longitude) {
  * @returns zip code of a lat long.the location.
  * @returns null if the zip code cannot be determined from the location.
  */
-export function findZipcodeOfLatLong(latitude, longitude) {
+function findZipcodeOfLatLong(latitude, longitude) {
     if (!latitude || !longitude)
         return '';
-    const zipCode = gps.gps2zip(latitude, longitude);
+    const zipCode = gps2zip_1.default.gps2zip(latitude, longitude);
     return zipCode || null;
 }
+//# sourceMappingURL=lib.js.map
