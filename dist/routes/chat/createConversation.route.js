@@ -1,4 +1,4 @@
-import { createConversation } from '../../controllers/createConversation.controller.js';
+import { createConversation } from '../../controllers/chat/createConversation.controller.js';
 import { passwordAuth } from '../../middlewares/passwordAuth.middleware.js';
 import { zodValidate } from '../../utils/zodValidate.js';
 import express from 'express';
