@@ -1,10 +1,10 @@
 import { env } from '@/configs/env';
-import { swaggerUi, specs } from './configs/swagger';
 import { errorHandler } from '@/utils/errorHandler';
 import logger, { morganMiddleware } from '@/utils/logger';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { type Application } from 'express';
+import { specs, swaggerUi } from './configs/swagger';
 import mainRouter from './mainRouter';
 
 const app: Application = express();

@@ -14,7 +14,6 @@ import { getByZipCodeRouter, getZipCodeRouter } from './routes/others/latLongToZ
 
 const mainRouter = Router();
 
-
 mainRouter.use('/createConversation', createConversationRouter);
 mainRouter.use('/getAllChatAssets', getAllChatAssetsRouter);
 mainRouter.use('/getHostAccessToken', getHostAccessTokenRouter);
