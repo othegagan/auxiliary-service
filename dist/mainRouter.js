@@ -13,6 +13,7 @@ const message_route_1 = require("./routes/chat/message.route.js");
 const copyTuroVehicleData_route_1 = require("./routes/turo/copyTuroVehicleData.route.js");
 const webhook_route_1 = __importDefault(require("./routes/webhook/webhook.route.js"));
 const express_1 = require("express");
+const insurance_route_1 = __importDefault(require("./routes/insurance/insurance.route.js"));
 const firebaseUser_route_1 = require("./routes/others/firebaseUser.route.js");
 const getVehicleSpecificDates_route_1 = __importDefault(require("./routes/others/getVehicleSpecificDates.route.js"));
 const latLongToZipCodes_1 = require("./routes/others/latLongToZipCodes.js");
@@ -37,5 +38,6 @@ mainRouter.use('/updateUser', firebaseUser_route_1.updateUserRouter);
 mainRouter.use('/getUserByEmail', firebaseUser_route_1.getUserByEmailRouter);
 mainRouter.use('/verifyUserToken', firebaseUser_route_1.verfiyUserTokenRouter);
 mainRouter.use('/webhook', webhook_route_1.default);
+mainRouter.use('/api/v1/createNewIndividual', insurance_route_1.default);
 exports.default = mainRouter;
 //# sourceMappingURL=mainRouter.js.map

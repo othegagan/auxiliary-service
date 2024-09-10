@@ -5,20 +5,9 @@ import logger from '@/utils/logger';
 import axios from 'axios';
 import { Request, Response } from 'express';
 
-export const insurance = async (req: Request, res: Response) => {
+export const createNewIndividual = async (req: Request, res: Response) => {
     const { firstName, lastName, email, externalId, phoneNumber } = req.validatedData;
 
-    try {
-        const response = await createNewIndividual(firstName, lastName, email, externalId, phoneNumber);
-
-        res.status(200).json(new ApiResponse(200, response, 'Individual created successfully'));
-    } catch (error) {
-        logger.error(error.message);
-        res.status(500).json(new ApiError(500, error.message, error));
-    }
-};
-
-async function createNewIndividual(firstName: string, lastName: string, email: string, externalId: string, phoneNumber: string) {
     try {
         const url = `${env.MEASUREONE_BASE_URL}/v3/individuals/new`;
 
@@ -40,12 +29,22 @@ async function createNewIndividual(firstName: string, lastName: string, email: s
         };
 
         const response = await axios.post(url, payload, config);
-        return response.data;
+
+        res.status(200).json(new ApiResponse(200, response, 'Individual created successfully'));
     } catch (error) {
-        logger.error(error);
-        throw new ApiError(500, error.message, error);
+        logger.error(error.message);
+        res.status(500).json(new ApiError(500, error.message, error));
     }
-}
+};
+
+// async function createNewIndividual(firstName: string, lastName: string, email: string, externalId: string, phoneNumber: string) {
+//     try {
+//         return response.data;
+//     } catch (error) {
+//         logger.error(error);
+//         throw new ApiError(500, error.message, error);
+//     }
+// }
 
 async function getDetailsOfIndividual(id: string) {
     try {

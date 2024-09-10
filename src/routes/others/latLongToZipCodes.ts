@@ -46,7 +46,7 @@ const getByZipCodeRouter = express.Router();
 
 /**
  * @swagger
- * /getZipCode:
+ * /api/v1/availability/getZipCode:
  *   post:
  *     summary: Get zipcode for a given latitude and longitude
  *     tags: [Others]
@@ -80,7 +80,7 @@ getZipCodeRouter.post(
 
 /**
  * @swagger
- * /getByZipCode:
+ * /api/v1/availability/getByZipCode:
  *   post:
  *     summary: Get nearby zipcodes for a given latitude and longitude
  *     tags: [Others]
