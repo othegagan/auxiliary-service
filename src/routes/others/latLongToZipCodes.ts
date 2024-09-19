@@ -56,6 +56,9 @@ const getByZipCodeRouter = express.Router();
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/LatLngInput'
+ *           example:
+ *               lat: "30.2672"
+ *               lng: "-97.7431"
  *     responses:
  *       200:
  *         description: Successfully retrieved zipcode
@@ -63,6 +66,11 @@ const getByZipCodeRouter = express.Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ZipCodeResponse'
+ *             example:
+ *               zipcode:
+ *                 zip_code: 78701
+ *                 latitude: 30.270569
+ *                 longitude: -97.742589
  *       400:
  *         description: Bad request
  *       500:
@@ -90,6 +98,9 @@ getZipCodeRouter.post(
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/LatLngInput'
+ *           example:
+ *               lat: "30.2672"
+ *               lng: "-97.7431"
  *     responses:
  *       200:
  *         description: Successfully retrieved nearby zipcodes
@@ -97,6 +108,15 @@ getZipCodeRouter.post(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ZipCodesResponse'
+ *             example:
+ *               zipcodes: [
+ *                 "73301",
+ *                 "73344",
+ *                 "78701",
+ *                 "78702",
+ *                 "78703",
+ *                 "78704"
+ *               ]
  *       400:
  *         description: Bad request
  *       500:

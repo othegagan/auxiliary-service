@@ -48,7 +48,7 @@ function convertToTuroDate(dateString, zipCode) {
     const timeZone = (0, lib_1.findTimeZoneByZipcode)(zipCode);
     const combinedDateTimeString = `${formattedDate}T${formattedTime}`;
     const convertedCarDate = (0, date_1.parseZonedDateTime)(`${combinedDateTimeString}[${timeZone}]`).toAbsoluteString();
-    console.log(dateString, '==>', convertedCarDate);
+    // console.log(dateString, '==>', convertedCarDate);
     return convertedCarDate;
 }
 function splitDateTime(dateTimeString) {

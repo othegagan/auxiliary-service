@@ -34,7 +34,7 @@ const searchTimeConversionController = async (req, res) => {
             pickupTime: startTime,
             dropTime: endTime
         };
-        res.status(200).send(new apiResponse_1.ApiResponse(200, response, '"Successfully converted to vehicle specified time zone'));
+        res.status(200).send(new apiResponse_1.ApiResponse(200, response, 'Successfully converted to vehicle specified time zone'));
     }
     catch (error) {
         logger_1.default.error(error.message);

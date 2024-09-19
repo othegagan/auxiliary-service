@@ -1,5 +1,3 @@
-// This file is used to export all routes
-import { Router } from 'express';
 import { getAllChatHistoryFluxRouter, getAllChatHistoryRouter } from '@/routes/chat/chatHistory.route';
 import createConversationRouter from '@/routes/chat/createConversation.route';
 import getAllChatAssetsRouter from '@/routes/chat/getAllChatAssets.route';
@@ -8,6 +6,8 @@ import getHostAccessTokenRouter from '@/routes/chat/getHostAccessToken.route';
 import { clientSendMessageFluxRouter, clientSendMessageRouter, hostSendMessageRouter, systemSendMessageRouter } from '@/routes/chat/message.route';
 import { copyTuroVehicleDataRouter, copyTuroVehicleDataServerlessRouter } from '@/routes/turo/copyTuroVehicleData.route';
 import webhookRouter from '@/routes/webhook/webhook.route';
+// This file is used to export all routes
+import { Router } from 'express';
 import insuranceRouter from './routes/insurance/insurance.route';
 import { createUserRouter, getUserByEmailRouter, updateUserRouter, verfiyUserTokenRouter } from './routes/others/firebaseUser.route';
 import getVehicleSpecificDatesRouter from './routes/others/getVehicleSpecificDates.route';

@@ -4,14 +4,7 @@
         "enabled": true
     },
     "files": {
-        "ignore": [
-            ".biome/cache",
-            "node_modules/*",
-            "public/*",
-            ".env/*",
-            "dist/*",
-            "src/configs/swagger-output.json"
-        ]
+        "ignore": [".biome/cache", "node_modules/*", "public/*", ".env/*", "dist/*", "src/configs/swagger-output.json"]
     },
     "linter": {
         "enabled": true,
@@ -89,9 +82,7 @@
     },
     "overrides": [
         {
-            "include": [
-                "*.json"
-            ],
+            "include": ["*.json"],
             "formatter": {
                 "indentWidth": 4
             }

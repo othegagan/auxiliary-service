@@ -8,9 +8,9 @@ export class ApiError extends Error {
     constructor(statusCode: number, message = 'Something went wrong', errors: any[] = [], stack = '') {
         super(message);
         this.statusCode = statusCode;
-        this.data = null;
-        this.message = message; // Ensure message is set as a field
         this.success = false;
+        this.message = message; // Ensure message is set as a field
+        this.data = null;
         this.errors = errors;
 
         if (stack) {
