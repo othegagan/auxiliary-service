@@ -13,10 +13,9 @@ import zipCodesNearby from 'zipcodes-nearby';
  * @returns The converted date and time in ISO format with the zipcode timezone.
  * @throws Will throw an error if the timezone cannot be determined from the zip code.
  */
-export function convertToTimeZoneISO(date: string, time: string, zipCode: string | number) {
-    const dateString = `${date}T${time}`;
+export function convertToTimeZoneISO(dateTime: string, zipCode: string | number) {
     const timeZone = findTimeZoneByZipcode(zipCode);
-    const converedCarDate = parseZonedDateTime(`${dateString}[${timeZone}]`).toAbsoluteString();
+    const converedCarDate = parseZonedDateTime(`${dateTime}[${timeZone}]`).toAbsoluteString();
 
     return converedCarDate;
 }

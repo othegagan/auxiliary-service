@@ -27,7 +27,11 @@ const envSchema = zod_1.z.object({
     // MeasureOne congfiguration
     MEASUREONE_BASE_URL: zod_1.z.string(),
     MEASUREONE_BRARER_TOKEN: zod_1.z.string(),
-    MEASUREONE_API_VERSION: zod_1.z.string()
+    MEASUREONE_API_VERSION: zod_1.z.string(),
+    // Stripe configuration
+    STRIPE_BASE_URL: zod_1.z.string(),
+    STRIPE_SECRET_KEY: zod_1.z.string(),
+    STRIPE_PUBLISHABLE_KEY: zod_1.z.string()
 });
 exports.env = envSchema.parse(process.env);
 //# sourceMappingURL=env.js.map

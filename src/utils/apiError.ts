@@ -1,6 +1,7 @@
 export class ApiError extends Error {
     statusCode: number;
-    data: any;
+    data: null;
+    message: string;
     success: boolean;
     errors: any[];
 
@@ -8,7 +9,7 @@ export class ApiError extends Error {
         super(message);
         this.statusCode = statusCode;
         this.data = null;
-        this.message = message;
+        this.message = message; // Ensure message is set as a field
         this.success = false;
         this.errors = errors;
 

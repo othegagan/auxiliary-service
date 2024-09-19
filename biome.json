@@ -1,8 +1,17 @@
 {
     "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
-    "organizeImports": { "enabled": true },
+    "organizeImports": {
+        "enabled": true
+    },
     "files": {
-        "ignore": [".biome/cache", "node_modules/*", "public/*", ".env/*", "dist/*", "src/configs/swagger-output.json"]
+        "ignore": [
+            ".biome/cache",
+            "node_modules/*",
+            "public/*",
+            ".env/*",
+            "dist/*",
+            "src/configs/swagger-output.json"
+        ]
     },
     "linter": {
         "enabled": true,
@@ -21,7 +30,8 @@
             },
             "correctness": {
                 "useExhaustiveDependencies": "off",
-                "noUnusedImports": "warn"
+                "noUnusedImports": "warn",
+                "noUnsafeOptionalChaining": "off"
             },
             "style": {
                 "useTemplate": "warn",
@@ -79,7 +89,9 @@
     },
     "overrides": [
         {
-            "include": ["*.json"],
+            "include": [
+                "*.json"
+            ],
             "formatter": {
                 "indentWidth": 4
             }

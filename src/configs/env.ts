@@ -29,7 +29,12 @@ const envSchema = z.object({
     // MeasureOne congfiguration
     MEASUREONE_BASE_URL: z.string(),
     MEASUREONE_BRARER_TOKEN: z.string(),
-    MEASUREONE_API_VERSION: z.string()
+    MEASUREONE_API_VERSION: z.string(),
+
+    // Stripe configuration
+    STRIPE_BASE_URL: z.string(),
+    STRIPE_SECRET_KEY: z.string(),
+    STRIPE_PUBLISHABLE_KEY: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
