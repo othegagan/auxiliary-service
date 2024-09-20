@@ -169,7 +169,6 @@ const emailTimeConversionSchema = z.object({
  *           schema:
  *             $ref: '#/components/schemas/TuroTimeConversion'
  *           example:
- *               value:
  *                 zipCode: "73301"
  *                 tripST: "2024-04-11 15:00:00+00"
  *                 tripET: "2024-04-17 19:00:00+00"
