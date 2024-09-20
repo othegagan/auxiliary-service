@@ -12,6 +12,10 @@ const express_1 = __importDefault(require("express"));
 const swagger_1 = require("./configs/swagger.js");
 const mainRouter_1 = __importDefault(require("./mainRouter.js"));
 const enhancedLogger_1 = __importDefault(require("./utils/enhancedLogger.js"));
+const dotenv_1 = __importDefault(require("dotenv"));
+// Load environment variables based on NODE_ENV
+const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
+dotenv_1.default.config({ path: `${envFile}` });
 const app = (0, express_1.default)();
 // Middleware
 app.use(express_1.default.json());

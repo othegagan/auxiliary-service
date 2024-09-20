@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.env = void 0;
+const dotenv_1 = require("dotenv");
 const zod_1 = require("zod");
+// Load environment variables based on NODE_ENV
+const envFile = `.env.${process.env.NODE_ENV}`;
+(0, dotenv_1.config)({ path: envFile });
 const envSchema = zod_1.z.object({
     PORT: zod_1.z.coerce.number(),
     NODE_ENV: zod_1.z.union([zod_1.z.literal('development'), zod_1.z.literal('qa'), zod_1.z.literal('production')]),

@@ -8,6 +8,12 @@ import { specs, swaggerUi } from './configs/swagger';
 import mainRouter from './mainRouter';
 import enhancedLogger from './utils/enhancedLogger';
 
+import dotenv from 'dotenv';
+
+// Load environment variables based on NODE_ENV
+const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
+dotenv.config({ path: `${envFile}` });
+
 const app: Application = express();
 
 // Middleware

@@ -1,4 +1,9 @@
+import { config } from 'dotenv';
 import { z } from 'zod';
+
+// Load environment variables based on NODE_ENV
+const envFile = `.env.${process.env.NODE_ENV}`;
+config({ path: envFile });
 
 const envSchema = z.object({
     PORT: z.coerce.number(),
