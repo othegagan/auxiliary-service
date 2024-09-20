@@ -12,6 +12,10 @@ const options = {
         },
         servers: [
             {
+                url: 'https://auxiliary-service.onrender.com/',
+                description: 'Deployed Dev Environment'
+            },
+            {
                 url: `http://localhost:${process.env.PORT || 3000}`,
                 description: 'Development server'
             }
