@@ -156,7 +156,7 @@ const emailTimeConversionSchema = zod_1.z.object({
 });
 /**
  * @swagger
- * /api/v1/timeConversion/emailTimeConversion:
+ * /api/v1/timeConversions/emailTimeConversion:
  *   post:
  *     summary: Convert email time
  *     tags: [Time Conversion]

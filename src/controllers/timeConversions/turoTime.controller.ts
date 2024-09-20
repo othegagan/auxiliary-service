@@ -32,7 +32,7 @@ export const turoTimeConversionController = async (req: Request, res: Response) 
             };
         }
 
-        res.status(200).send(new ApiResponse(200, response, '"Successfully converted to vehicle specified time zone'));
+        res.status(200).send(new ApiResponse(200, response, 'Successfully converted to vehicle specified time zone'));
     } catch (error) {
         logger.error(error.message);
         res.status(200).send(new ApiError(500, `Failed to convert the dates: ${error.message}`));

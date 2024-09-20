@@ -1,11 +1,12 @@
 import { env } from '@/configs/env';
 import { errorHandler } from '@/utils/errorHandler';
-import logger, { morganMiddleware } from '@/utils/logger';
+import logger from '@/utils/logger';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { type Application } from 'express';
 import { specs, swaggerUi } from './configs/swagger';
 import mainRouter from './mainRouter';
+import enhancedLogger from './utils/enhancedLogger';
 
 const app: Application = express();
 
@@ -14,12 +15,19 @@ app.use(express.json());
 app.use(cors({ origin: '*' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(morganMiddleware);
 app.use(express.static('public'));
 
 // Serve Swagger API docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
+app.use((req, res, next) => {
+    const originalJson = res.json;
+    res.json = function (body) {
+        enhancedLogger.logRequestResponse(req, res, body);
+        return originalJson.call(this, body);
+    };
+    next();
+});
 // Default
 app.get('/', (req, res) => {
     res.json({

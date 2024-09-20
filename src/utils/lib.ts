@@ -6,18 +6,29 @@ import zipToTimeZone from 'zipcode-to-timezone';
 import zipCodesNearby from 'zipcodes-nearby';
 
 /**
- * Converts a given date, time, and zip code to a specific zipcode timezone ISO string.
-
- * @param datetime - The date in YYYY-MM-DDTHH:MM:SS format.
+ * Converts a given date and time to ISO format in the timezone of the specified zip code.
+ *
+ * @param dateTime - The date and time in 'YYYY-MM-DDTHH:MM:SS' format.
  * @param zipCode - The zip code to determine the timezone.
- * @returns The converted date and time in ISO format with the zipcode timezone.
- * @throws Will throw an error if the timezone cannot be determined from the zip code.
+ * @returns The converted date and time in ISO format with the zipcode's timezone.
+ * @throws Error if the timezone cannot be determined from the zip code or if the date is invalid.
  */
-export function convertToTimeZoneISO(dateTime: string, zipCode: string | number) {
-    const timeZone = findTimeZoneByZipcode(zipCode);
-    const converedCarDate = parseZonedDateTime(`${dateTime}[${timeZone}]`).toAbsoluteString();
+export function convertToTimeZoneISO(dateTime: string, zipCode: string | number): string {
+    if (!dateTime || !zipCode) {
+        throw new Error('Both dateTime and zipCode are required');
+    }
 
-    return converedCarDate;
+    const timeZone = findTimeZoneByZipcode(zipCode);
+    if (!timeZone) {
+        throw new Error(`Unable to determine timezone for zip code: ${zipCode}`);
+    }
+
+    try {
+        const zonedDateTime = parseZonedDateTime(`${dateTime}[${timeZone}]`);
+        return zonedDateTime.toAbsoluteString();
+    } catch (error) {
+        throw new Error(`Invalid date format or conversion error: ${error.message}`);
+    }
 }
 
 /**
