@@ -159,18 +159,20 @@ const emailTimeConversionSchema = z.object({
  * @swagger
  * /api/v1/timeConversions/emailTimeConversion:
  *   post:
- *     summary: Convert email time
+ *     summary: Convert time for email
  *     tags: [Time Conversion]
  *     requestBody:
+ *       description: Time Conversion request body for email, messages etc..
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/EmailTimeConversion'
+ *             $ref: '#/components/schemas/TuroTimeConversion'
  *           example:
- *             zipCode: "73301"
- *             tripST: "2024-04-11 15:00:00+00"
- *             tripET: "2024-04-17 19:00:00+00"
+ *               value:
+ *                 zipCode: "73301"
+ *                 tripST: "2024-04-11 15:00:00+00"
+ *                 tripET: "2024-04-17 19:00:00+00"
  *     responses:
  *       200:
  *         description: Successful time conversion
