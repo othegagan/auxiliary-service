@@ -12,12 +12,28 @@ import getLogsRouter from './routes/getLogs.route';
 import testRouter from './routes/others/test.route';
 import enhancedLogger from './utils/enhancedLogger';
 import { getAppVersion } from './utils/lib';
+import { createServer } from 'node:http';
+import { Server } from 'socket.io';
+import { initializeSocket } from './controllers/others/drivingLicenceSocket.controller';
 
 // Load environment variables based on NODE_ENV
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
 dotenv.config({ path: `${envFile}` });
 
 const app: Application = express();
+
+const server = createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'User-Agent', 'X-Requested-With'],
+        credentials: true
+    }
+});
+
+// Initialize socket connections
+initializeSocket(io);
 
 // Middleware
 app.use(express.json());
@@ -72,6 +88,6 @@ app.use(errorHandler);
 
 const PORT = env.PORT || 5000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     logger.info(`Server is running in ${env.NODE_ENV} mode on port ${PORT}`);
 });
