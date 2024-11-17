@@ -1,13 +1,8 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.verfiyUserTokenRouter = exports.getUserByEmailRouter = exports.updateUserRouter = exports.createUserRouter = void 0;
-const firebaseUser_controller_1 = require("../../controllers/others/firebaseUser.controller.js");
-const zodValidate_1 = require("../../utils/zodValidate.js");
-const express_1 = __importDefault(require("express"));
-const zod_1 = require("zod");
+import { checkPhoneNumberLinked, createUserInFirebase, getUserByEmailInFirebase, updateUserInFirebase, verifyUserTokenInFirebase } from '@/controllers/others/firebaseUser.controller';
+import { zodValidate, zodValidateQuery } from '@/utils/zodValidate';
+import express from 'express';
+import { z } from 'zod';
+const firebaseRouter = express.Router();
 /**
  * @swagger
  * components:
@@ -86,40 +81,35 @@ const zod_1 = require("zod");
  *           format: uuid
  */
 const userSchemas = {
-    create: zod_1.z.object({
-        email: zod_1.z.string().email({ message: 'Invalid email' }),
-        emailVerified: zod_1.z.boolean(),
-        phoneNumber: zod_1.z.string(),
-        password: zod_1.z.string({ message: 'Password is required' }),
-        displayName: zod_1.z.string(),
-        photoURL: zod_1.z.string(),
-        disabled: zod_1.z.boolean()
+    create: z.object({
+        email: z.string().email({ message: 'Invalid email' }),
+        emailVerified: z.boolean(),
+        phoneNumber: z.string(),
+        password: z.string({ message: 'Password is required' }),
+        displayName: z.string(),
+        photoURL: z.string(),
+        disabled: z.boolean()
     }),
-    update: zod_1.z.object({
-        uid: zod_1.z.string().uuid({ message: 'Invalid uid' }),
-        email: zod_1.z.string().email({ message: 'Invalid email' }),
-        emailVerified: zod_1.z.boolean(),
-        phoneNumber: zod_1.z.string(),
-        password: zod_1.z.string({ message: 'Password is required' }),
-        displayName: zod_1.z.string(),
-        photoURL: zod_1.z.string(),
-        disabled: zod_1.z.boolean()
+    update: z.object({
+        uid: z.string().uuid({ message: 'Invalid uid' }),
+        email: z.string().email({ message: 'Invalid email' }),
+        emailVerified: z.boolean(),
+        phoneNumber: z.string(),
+        password: z.string({ message: 'Password is required' }),
+        displayName: z.string(),
+        photoURL: z.string(),
+        disabled: z.boolean()
     }),
-    getByEmail: zod_1.z.object({
-        email: zod_1.z.string().email({ message: 'Invalid email' })
+    getByEmail: z.object({
+        email: z.string().email({ message: 'Invalid email' })
     }),
-    verifyToken: zod_1.z.object({
-        token: zod_1.z.string().uuid({ message: 'Invalid token' })
+    verifyToken: z.object({
+        token: z.string({ required_error: 'Token is required' })
+    }),
+    checkPhoneLinkedToAnyUser: z.object({
+        phoneNumber: z.string({ required_error: 'Phone Number is required' })
     })
 };
-const createUserRouter = express_1.default.Router();
-exports.createUserRouter = createUserRouter;
-const updateUserRouter = express_1.default.Router();
-exports.updateUserRouter = updateUserRouter;
-const getUserByEmailRouter = express_1.default.Router();
-exports.getUserByEmailRouter = getUserByEmailRouter;
-const verfiyUserTokenRouter = express_1.default.Router();
-exports.verfiyUserTokenRouter = verfiyUserTokenRouter;
 /**
  * @swagger
  * /createUser:
@@ -140,7 +130,7 @@ exports.verfiyUserTokenRouter = verfiyUserTokenRouter;
  *       500:
  *         description: Internal server error
  */
-createUserRouter.post('/', (0, zodValidate_1.zodValidate)(userSchemas.create), firebaseUser_controller_1.createUserInFirebase);
+firebaseRouter.post('/createUser', zodValidate(userSchemas.create), createUserInFirebase);
 /**
  * @swagger
  * /updateUser:
@@ -161,7 +151,7 @@ createUserRouter.post('/', (0, zodValidate_1.zodValidate)(userSchemas.create), f
  *       500:
  *         description: Internal server error
  */
-updateUserRouter.post('/', (0, zodValidate_1.zodValidate)(userSchemas.update), firebaseUser_controller_1.updateUserInFirebase);
+firebaseRouter.post('/updateUser', zodValidate(userSchemas.update), updateUserInFirebase);
 /**
  * @swagger
  * /getUserByEmail:
@@ -184,7 +174,7 @@ updateUserRouter.post('/', (0, zodValidate_1.zodValidate)(userSchemas.update), f
  *       500:
  *         description: Internal server error
  */
-getUserByEmailRouter.post('/', (0, zodValidate_1.zodValidate)(userSchemas.getByEmail), firebaseUser_controller_1.getUserByEmailInFirebase);
+firebaseRouter.post('/getUserByEmail', zodValidate(userSchemas.getByEmail), getUserByEmailInFirebase);
 /**
  * @swagger
  * /verifyUserToken:
@@ -207,5 +197,31 @@ getUserByEmailRouter.post('/', (0, zodValidate_1.zodValidate)(userSchemas.getByE
  *       500:
  *         description: Internal server error
  */
-verfiyUserTokenRouter.post('/', (0, zodValidate_1.zodValidate)(userSchemas.verifyToken), firebaseUser_controller_1.verifyUserTokenInFirebase);
+firebaseRouter.post('/verifyUserToken', zodValidate(userSchemas.verifyToken), verifyUserTokenInFirebase);
+/**
+ * @swagger
+ * /checkPhoneLinkedToAnyUser:
+ *   get:
+ *     summary: Check if a phone number is linked to any user in Firebase
+ *     tags: [Firebase User]
+ *     parameters:
+ *       - in: query
+ *         name: phoneNumber
+ *         required: true
+ *         schema:
+ *           type: string
+ *           description: Phone number to check
+ *           example: "+1234567890"
+ *     responses:
+ *       200:
+ *         description: Successful response with boolean value indicating if phone number is linked to any user
+ *       400:
+ *         description: Bad request (invalid input)
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+firebaseRouter.get('/checkPhoneLinkedToAnyUser', zodValidateQuery(userSchemas.checkPhoneLinkedToAnyUser), checkPhoneNumberLinked);
+export default firebaseRouter;
 //# sourceMappingURL=firebaseUser.route.js.map

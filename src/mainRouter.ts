@@ -8,8 +8,9 @@ import { copyTuroVehicleDataRouter, copyTuroVehicleDataServerlessRouter } from '
 import webhookRouter from '@/routes/webhook/webhook.route';
 // This file is used to export all routes
 import { Router } from 'express';
+import priceCalculationRouter from './routes/booking/priceCalculation.route';
 import insuranceRouter from './routes/insurance/insurance.route';
-import { createUserRouter, getUserByEmailRouter, updateUserRouter, verfiyUserTokenRouter } from './routes/others/firebaseUser.route';
+import firebaseRouter from './routes/others/firebaseUser.route';
 import getVehicleSpecificDatesRouter from './routes/others/getVehicleSpecificDates.route';
 import { getByZipCodeRouter, getZipCodeRouter } from './routes/others/latLongToZipCodes';
 import timeConversionRouter from './routes/others/timeConversion.route';
@@ -35,10 +36,10 @@ mainRouter.use('/copyTuroVehicleData', copyTuroVehicleDataRouter);
 mainRouter.use('/copyTuroVehicleDataServerless', copyTuroVehicleDataServerlessRouter);
 
 // Firebase user management
-mainRouter.use('/createUser', createUserRouter);
-mainRouter.use('/updateUser', updateUserRouter);
-mainRouter.use('/getUserByEmail', getUserByEmailRouter);
-mainRouter.use('/verifyUserToken', verfiyUserTokenRouter);
+mainRouter.use('/', firebaseRouter);
+
+// Booking
+mainRouter.use('/api/v1/priceCalculation', priceCalculationRouter);
 
 // Time Conversion
 mainRouter.use('/api/v1/timeConversions', timeConversionRouter);
@@ -47,7 +48,7 @@ mainRouter.use('/api/v1/availability/getZipCode', getZipCodeRouter);
 mainRouter.use('/api/v1/availability/getByZipCode', getByZipCodeRouter);
 
 // Insurance
-mainRouter.use('/webhook', webhookRouter);
-mainRouter.use('/api/v1/createNewIndividual', insuranceRouter);
+mainRouter.use('/api/v1/insurance/webhook', webhookRouter);
+mainRouter.use('/api/v1/insurance', insuranceRouter);
 
 export default mainRouter;

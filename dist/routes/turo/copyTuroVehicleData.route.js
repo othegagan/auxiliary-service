@@ -1,14 +1,8 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.copyTuroVehicleDataServerlessRouter = exports.copyTuroVehicleDataRouter = void 0;
-const copyTuroVehicleData_controller_1 = require("../../controllers/turo/copyTuroVehicleData.controller.js");
-const passwordAuth_middleware_1 = require("../../middlewares/passwordAuth.middleware.js");
-const zodValidate_1 = require("../../utils/zodValidate.js");
-const express_1 = __importDefault(require("express"));
-const zod_1 = require("zod");
+import { copyTuroVehicleData, copyTuroVehicleDataServerless } from '@/controllers/turo/copyTuroVehicleData.controller';
+import { passwordAuth } from '@/middlewares/passwordAuth.middleware';
+import { zodValidate } from '@/utils/zodValidate';
+import express from 'express';
+import { z } from 'zod';
 /**
  * @swagger
  * components:
@@ -35,12 +29,11 @@ const zod_1 = require("zod");
  *           type: object
  *           description: The copied vehicle data
  */
-const schema = zod_1.z.object({
-    turolink: zod_1.z.string({ required_error: 'Turo link is required', invalid_type_error: 'Turo link must be a string' }).trim(),
-    password: zod_1.z.string({ required_error: 'Password is required' })
+const schema = z.object({
+    turolink: z.string({ required_error: 'Turo link is required', invalid_type_error: 'Turo link must be a string' }).trim(),
+    password: z.string({ required_error: 'Password is required' })
 });
-const copyTuroVehicleDataRouter = express_1.default.Router();
-exports.copyTuroVehicleDataRouter = copyTuroVehicleDataRouter;
+const copyTuroVehicleDataRouter = express.Router();
 /**
  * @swagger
  * /copyTuroVehicleData:
@@ -67,9 +60,8 @@ exports.copyTuroVehicleDataRouter = copyTuroVehicleDataRouter;
  *       500:
  *         description: Internal server error
  */
-copyTuroVehicleDataRouter.post('/', passwordAuth_middleware_1.passwordAuth, (0, zodValidate_1.zodValidate)(schema), copyTuroVehicleData_controller_1.copyTuroVehicleData);
-const copyTuroVehicleDataServerlessRouter = express_1.default.Router();
-exports.copyTuroVehicleDataServerlessRouter = copyTuroVehicleDataServerlessRouter;
+copyTuroVehicleDataRouter.post('/', passwordAuth, zodValidate(schema), copyTuroVehicleData);
+const copyTuroVehicleDataServerlessRouter = express.Router();
 /**
  * @swagger
  * /copyTuroVehicleDataServerless:
@@ -96,5 +88,6 @@ exports.copyTuroVehicleDataServerlessRouter = copyTuroVehicleDataServerlessRoute
  *       500:
  *         description: Internal server error
  */
-copyTuroVehicleDataServerlessRouter.post('/', passwordAuth_middleware_1.passwordAuth, (0, zodValidate_1.zodValidate)(schema), copyTuroVehicleData_controller_1.copyTuroVehicleDataServerless);
+copyTuroVehicleDataServerlessRouter.post('/', passwordAuth, zodValidate(schema), copyTuroVehicleDataServerless);
+export { copyTuroVehicleDataRouter, copyTuroVehicleDataServerlessRouter };
 //# sourceMappingURL=copyTuroVehicleData.route.js.map

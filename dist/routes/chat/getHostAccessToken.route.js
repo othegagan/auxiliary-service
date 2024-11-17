@@ -1,16 +1,11 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const getHostAccessToken_controller_1 = require("../../controllers/chat/getHostAccessToken.controller.js");
-const tokenAuth_middleware_1 = __importDefault(require("../../middlewares/tokenAuth.middleware.js"));
-const zodValidate_1 = require("../../utils/zodValidate.js");
-const express_1 = __importDefault(require("express"));
-const zod_1 = require("zod");
-const getHostAccessTokenRouter = express_1.default.Router();
-const schema = zod_1.z.object({
-    serviceId: zod_1.z.string({ required_error: 'Service ID is required', invalid_type_error: 'Service ID must be a string' })
+import { getHostAccessToken } from '@/controllers/chat/getHostAccessToken.controller';
+import tokenAuth from '@/middlewares/tokenAuth.middleware';
+import { zodValidate } from '@/utils/zodValidate';
+import express from 'express';
+import { z } from 'zod';
+const getHostAccessTokenRouter = express.Router();
+const schema = z.object({
+    serviceId: z.string({ required_error: 'Service ID is required', invalid_type_error: 'Service ID must be a string' })
 });
 /**
  * @swagger
@@ -49,6 +44,6 @@ const schema = zod_1.z.object({
  *         500:
  *           description: Server error
  * */
-getHostAccessTokenRouter.post('/', tokenAuth_middleware_1.default, (0, zodValidate_1.zodValidate)(schema), getHostAccessToken_controller_1.getHostAccessToken);
-exports.default = getHostAccessTokenRouter;
+getHostAccessTokenRouter.post('/', tokenAuth, zodValidate(schema), getHostAccessToken);
+export default getHostAccessTokenRouter;
 //# sourceMappingURL=getHostAccessToken.route.js.map

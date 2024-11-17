@@ -38,7 +38,7 @@ const sendMessage = async (req: Request, res: Response, identity?: string) => {
 export const sendPushNotification = async (message: string, tripId: number, receiverType: 'host' | 'client' | 'both') => {
     const url = `${env.BUNDEE_BOOKING_SERVICE_BASE_URL}/v1/booking/pushNotification`;
 
-    const payload = { tripId, receiverType, message };
+    const payload = { tripid: tripId, receiverType, message };
     const config = { headers: { Bundee_auth_token: env.BUNDEE_AUTH_TOKEN } };
 
     return axios.post(url, payload, config);

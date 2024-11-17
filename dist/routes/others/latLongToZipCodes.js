@@ -1,14 +1,8 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getByZipCodeRouter = exports.getZipCodeRouter = void 0;
-const asyncHandler_1 = require("../../utils/asyncHandler.js");
-const lib_1 = require("../../utils/lib.js");
-const zodValidate_1 = require("../../utils/zodValidate.js");
-const express_1 = __importDefault(require("express"));
-const zod_1 = require("zod");
+import { asyncHandler } from '@/utils/asyncHandler';
+import { findNearByZipcodesByLatLong, findZipcodeOfLatLong } from '@/utils/lib';
+import { zodValidate } from '@/utils/zodValidate';
+import express from 'express';
+import { z } from 'zod';
 /**
  * @swagger
  * components:
@@ -40,14 +34,12 @@ const zod_1 = require("zod");
  *             type: string
  *           description: Array of nearby zipcodes
  */
-const schema = zod_1.z.object({
-    lat: zod_1.z.string({ required_error: 'lat is required' }),
-    lng: zod_1.z.string({ required_error: 'lng is required' })
+const schema = z.object({
+    lat: z.string({ required_error: 'lat is required' }),
+    lng: z.string({ required_error: 'lng is required' })
 });
-const getZipCodeRouter = express_1.default.Router();
-exports.getZipCodeRouter = getZipCodeRouter;
-const getByZipCodeRouter = express_1.default.Router();
-exports.getByZipCodeRouter = getByZipCodeRouter;
+const getZipCodeRouter = express.Router();
+const getByZipCodeRouter = express.Router();
 /**
  * @swagger
  * /api/v1/availability/getZipCode:
@@ -80,9 +72,9 @@ exports.getByZipCodeRouter = getByZipCodeRouter;
  *       500:
  *         description: Internal server error
  */
-getZipCodeRouter.post('/', (0, zodValidate_1.zodValidate)(schema), (0, asyncHandler_1.asyncHandler)(async (req, res) => {
+getZipCodeRouter.post('/', zodValidate(schema), asyncHandler(async (req, res) => {
     const { lat, lng } = req.validatedData;
-    const result = await (0, lib_1.findZipcodeOfLatLong)(lat, lng);
+    const result = await findZipcodeOfLatLong(lat, lng);
     res.status(200).json({ zipcode: result });
 }));
 /**
@@ -121,9 +113,10 @@ getZipCodeRouter.post('/', (0, zodValidate_1.zodValidate)(schema), (0, asyncHand
  *       500:
  *         description: Internal server error
  */
-getByZipCodeRouter.post('/', (0, zodValidate_1.zodValidate)(schema), (0, asyncHandler_1.asyncHandler)(async (req, res) => {
+getByZipCodeRouter.post('/', zodValidate(schema), asyncHandler(async (req, res) => {
     const { lat, lng } = req.validatedData;
-    const zipcodes = (await (0, lib_1.findNearByZipcodesByLatLong)(lat, lng)) || [];
+    const zipcodes = (await findNearByZipcodesByLatLong(lat, lng)) || [];
     res.status(200).json({ zipcodes });
 }));
+export { getZipCodeRouter, getByZipCodeRouter };
 //# sourceMappingURL=latLongToZipCodes.js.map

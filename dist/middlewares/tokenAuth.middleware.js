@@ -1,26 +1,22 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const firebase_1 = __importDefault(require("../configs/firebase.js"));
-const apiError_1 = require("../utils/apiError.js");
-const logger_1 = __importDefault(require("../utils/logger.js"));
+import admin from '@/configs/firebase';
+import { ApiError } from '@/utils/apiError';
+import logger from '@/utils/logger';
 const tokenAuth = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json(new apiError_1.ApiError(401, 'Unauthorized', [{ field: 'Authorization', message: 'Firebase ID token is missing' }]));
+        res.status(401).json(new ApiError(401, 'Unauthorized', [{ field: 'Authorization', message: 'Firebase ID token is missing' }]));
+        return; // Ensure we stop further execution here
     }
     const token = authHeader.split(' ')[1];
     try {
-        const decodedToken = await firebase_1.default.auth().verifyIdToken(token);
+        const decodedToken = await admin.auth().verifyIdToken(token);
         req.user = decodedToken;
-        next();
+        next(); // Pass control to the next middleware without returning anything
     }
     catch (error) {
-        logger_1.default.error('Error verifying token:', error);
-        return res.status(403).json(new apiError_1.ApiError(403, 'Forbidden', [{ field: 'Authorization', message: error.message }]));
+        logger.error('Error verifying token:', error);
+        res.status(403).json(new ApiError(403, 'Forbidden', [{ field: 'Authorization', message: error.message }])); // Send the response and stop here
     }
 };
-exports.default = tokenAuth;
+export default tokenAuth;
 //# sourceMappingURL=tokenAuth.middleware.js.map

@@ -1,18 +1,85 @@
-import { createNewIndividual } from '@/controllers/insurance/insurance.controller';
-import { zodValidate } from '@/utils/zodValidate';
+import {
+    createNewDataRequestIdController,
+    generateDataRequestLinkController,
+    getItemsOfIndividualOnDataRequestController
+} from '@/controllers/insurance/insurance.controller';
 import express from 'express';
-import { z } from 'zod';
 
 const insuranceRouter = express.Router();
 
-const schema = z.object({
-    firstName: z.string({ required_error: 'First name is required' }),
-    lastName: z.string({ required_error: 'Last name is required' }),
-    email: z.string().email(),
-    externalId: z.string().optional(),
-    phoneNumber: z.string({ invalid_type_error: 'Invalid phone number' }).optional()
-});
+/**
+ * @swagger
+ * /api/v1/insurance/datarequests/new:
+ *   get:
+ *     summary: Create a new data request id and public access token
+ *     tags: [Insurance]
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: number
+ *           description: Bundee user ID
+ *     responses:
+ *       200:
+ *         description: Successful response with data request link of MeasureOne site
+ *       400:
+ *         description: Bad request (invalid input)
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+insuranceRouter.get('/datarequests/new', createNewDataRequestIdController);
 
-insuranceRouter.post('/', zodValidate(schema), createNewIndividual);
+/**
+ * @swagger
+ * /api/v1/insurance/datarequests/generate_invitation_link:
+ *   get:
+ *     summary: Create a new data request link
+ *     tags: [Insurance]
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: number
+ *           description: Bundee user ID
+ *     responses:
+ *       200:
+ *         description: Successful response with data request link of MeasureOne site
+ *       400:
+ *         description: Bad request (invalid input)
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+insuranceRouter.get('/datarequests/generate_invitation_link', generateDataRequestLinkController);
+
+/**
+ * @swagger
+ * /api/v1/insurance/datarequests/get_items:
+ *   get:
+ *     summary: Get items of individual on data request
+ *     tags: [Insurance]
+ *     parameters:
+ *       - in: query
+ *         name: datarequestId
+ *         required: true
+ *         schema:
+ *           type: number
+ *           description: Get items of individual on data request
+ *     responses:
+ *       200:
+ *         description: Successful response with item details
+ *       400:
+ *         description: Bad request (invalid input)
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+insuranceRouter.get('/datarequests/get_items', getItemsOfIndividualOnDataRequestController);
 
 export default insuranceRouter;

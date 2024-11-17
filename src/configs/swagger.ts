@@ -12,12 +12,16 @@ const options = {
         },
         servers: [
             {
-                url: 'https://auxiliary-service.onrender.com/',
-                description: 'Deployed Dev Environment'
+                url: 'https://bundee-auxiliary-services-dev.azurewebsites.net/',
+                description: 'Deployed DEV on AZURE Environment'
             },
             {
-                url: `http://localhost:${process.env.PORT || 3000}`,
-                description: 'Development server'
+                url: 'https://bundee-auxiliary-services-qa.azurewebsites.net/',
+                description: 'Deployed QA on AZURE Environment'
+            },
+            {
+                url: 'http://localhost:8000',
+                description: 'Dev Localhost'
             }
         ],
         components: {
@@ -40,4 +44,4 @@ const endpointsFiles = ['./src/mainRouter.ts'];
 
 swaggerAutogen()(outputFile, endpointsFiles, options.definition);
 
-export { swaggerUi, specs };
+export { specs, swaggerUi };

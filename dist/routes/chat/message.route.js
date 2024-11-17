@@ -1,27 +1,17 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.clientSendMessageFluxRouter = exports.systemSendMessageRouter = exports.hostSendMessageRouter = exports.clientSendMessageRouter = void 0;
-const message_controller_1 = require("../../controllers/chat/message.controller.js");
-const passwordAuth_middleware_1 = require("../../middlewares/passwordAuth.middleware.js");
-const tokenAuth_middleware_1 = __importDefault(require("../../middlewares/tokenAuth.middleware.js"));
-const zodValidate_1 = require("../../utils/zodValidate.js");
-const express_1 = __importDefault(require("express"));
-const zod_1 = require("zod");
-const schema = zod_1.z.object({
-    tripId: zod_1.z.number({ required_error: 'Trip ID is required', invalid_type_error: 'Trip ID must be a number' }),
-    message: zod_1.z.string({ message: 'Message is required' }).trim()
+import { clientSendMessage, hostSendMessage, systemSendMessage } from '@/controllers/chat/message.controller';
+import { passwordAuth } from '@/middlewares/passwordAuth.middleware';
+import tokenAuth from '@/middlewares/tokenAuth.middleware';
+import { zodValidate } from '@/utils/zodValidate';
+import express from 'express';
+import { z } from 'zod';
+const schema = z.object({
+    tripId: z.number({ required_error: 'Trip ID is required', invalid_type_error: 'Trip ID must be a number' }),
+    message: z.string({ message: 'Message is required' }).trim()
 });
-const clientSendMessageRouter = express_1.default.Router();
-exports.clientSendMessageRouter = clientSendMessageRouter;
-const hostSendMessageRouter = express_1.default.Router();
-exports.hostSendMessageRouter = hostSendMessageRouter;
-const systemSendMessageRouter = express_1.default.Router();
-exports.systemSendMessageRouter = systemSendMessageRouter;
-const clientSendMessageFluxRouter = express_1.default.Router();
-exports.clientSendMessageFluxRouter = clientSendMessageFluxRouter;
+const clientSendMessageRouter = express.Router();
+const hostSendMessageRouter = express.Router();
+const systemSendMessageRouter = express.Router();
+const clientSendMessageFluxRouter = express.Router();
 /**
  * @swagger
  * tags:
@@ -172,8 +162,9 @@ exports.clientSendMessageFluxRouter = clientSendMessageFluxRouter;
  *       500:
  *         description: Server error
  */
-clientSendMessageFluxRouter.post('/', passwordAuth_middleware_1.passwordAuth, (0, zodValidate_1.zodValidate)(schema), message_controller_1.clientSendMessage);
-clientSendMessageRouter.post('/', tokenAuth_middleware_1.default, (0, zodValidate_1.zodValidate)(schema), message_controller_1.clientSendMessage);
-hostSendMessageRouter.post('/', tokenAuth_middleware_1.default, (0, zodValidate_1.zodValidate)(schema), message_controller_1.hostSendMessage);
-systemSendMessageRouter.post('/', passwordAuth_middleware_1.passwordAuth, (0, zodValidate_1.zodValidate)(schema), message_controller_1.systemSendMessage);
+clientSendMessageFluxRouter.post('/', passwordAuth, zodValidate(schema), clientSendMessage);
+clientSendMessageRouter.post('/', tokenAuth, zodValidate(schema), clientSendMessage);
+hostSendMessageRouter.post('/', tokenAuth, zodValidate(schema), hostSendMessage);
+systemSendMessageRouter.post('/', passwordAuth, zodValidate(schema), systemSendMessage);
+export { clientSendMessageRouter, hostSendMessageRouter, systemSendMessageRouter, clientSendMessageFluxRouter };
 //# sourceMappingURL=message.route.js.map

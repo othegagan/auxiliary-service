@@ -1,7 +1,15 @@
-import { createUserInFirebase, getUserByEmailInFirebase, updateUserInFirebase, verifyUserTokenInFirebase } from '@/controllers/others/firebaseUser.controller';
-import { zodValidate } from '@/utils/zodValidate';
+import {
+    checkPhoneNumberLinked,
+    createUserInFirebase,
+    getUserByEmailInFirebase,
+    updateUserInFirebase,
+    verifyUserTokenInFirebase
+} from '@/controllers/others/firebaseUser.controller';
+import { zodValidate, zodValidateQuery } from '@/utils/zodValidate';
 import express from 'express';
 import { z } from 'zod';
+
+const firebaseRouter = express.Router();
 
 /**
  * @swagger
@@ -105,14 +113,12 @@ const userSchemas = {
         email: z.string().email({ message: 'Invalid email' })
     }),
     verifyToken: z.object({
-        token: z.string().uuid({ message: 'Invalid token' })
+        token: z.string({ required_error: 'Token is required' })
+    }),
+    checkPhoneLinkedToAnyUser: z.object({
+        phoneNumber: z.string({ required_error: 'Phone Number is required' })
     })
 };
-
-const createUserRouter = express.Router();
-const updateUserRouter = express.Router();
-const getUserByEmailRouter = express.Router();
-const verfiyUserTokenRouter = express.Router();
 
 /**
  * @swagger
@@ -134,7 +140,7 @@ const verfiyUserTokenRouter = express.Router();
  *       500:
  *         description: Internal server error
  */
-createUserRouter.post('/', zodValidate(userSchemas.create), createUserInFirebase);
+firebaseRouter.post('/createUser', zodValidate(userSchemas.create), createUserInFirebase);
 
 /**
  * @swagger
@@ -156,7 +162,7 @@ createUserRouter.post('/', zodValidate(userSchemas.create), createUserInFirebase
  *       500:
  *         description: Internal server error
  */
-updateUserRouter.post('/', zodValidate(userSchemas.update), updateUserInFirebase);
+firebaseRouter.post('/updateUser', zodValidate(userSchemas.update), updateUserInFirebase);
 
 /**
  * @swagger
@@ -180,7 +186,7 @@ updateUserRouter.post('/', zodValidate(userSchemas.update), updateUserInFirebase
  *       500:
  *         description: Internal server error
  */
-getUserByEmailRouter.post('/', zodValidate(userSchemas.getByEmail), getUserByEmailInFirebase);
+firebaseRouter.post('/getUserByEmail', zodValidate(userSchemas.getByEmail), getUserByEmailInFirebase);
 
 /**
  * @swagger
@@ -204,6 +210,32 @@ getUserByEmailRouter.post('/', zodValidate(userSchemas.getByEmail), getUserByEma
  *       500:
  *         description: Internal server error
  */
-verfiyUserTokenRouter.post('/', zodValidate(userSchemas.verifyToken), verifyUserTokenInFirebase);
+firebaseRouter.post('/verifyUserToken', zodValidate(userSchemas.verifyToken), verifyUserTokenInFirebase);
 
-export { createUserRouter, updateUserRouter, getUserByEmailRouter, verfiyUserTokenRouter };
+/**
+ * @swagger
+ * /checkPhoneLinkedToAnyUser:
+ *   get:
+ *     summary: Check if a phone number is linked to any user in Firebase
+ *     tags: [Firebase User]
+ *     parameters:
+ *       - in: query
+ *         name: phoneNumber
+ *         required: true
+ *         schema:
+ *           type: string
+ *           description: Phone number to check
+ *           example: "+1234567890"
+ *     responses:
+ *       200:
+ *         description: Successful response with boolean value indicating if phone number is linked to any user
+ *       400:
+ *         description: Bad request (invalid input)
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+firebaseRouter.get('/checkPhoneLinkedToAnyUser', zodValidateQuery(userSchemas.checkPhoneLinkedToAnyUser), checkPhoneNumberLinked);
+
+export default firebaseRouter;

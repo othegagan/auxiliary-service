@@ -1,4 +1,5 @@
 import { env } from '@/configs/env';
+import { VehicleFeatures } from '@/types';
 import logger from '@/utils/logger';
 import axios from 'axios';
 

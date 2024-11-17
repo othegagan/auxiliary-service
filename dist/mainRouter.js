@@ -1,50 +1,45 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const chatHistory_route_1 = require("./routes/chat/chatHistory.route.js");
-const createConversation_route_1 = __importDefault(require("./routes/chat/createConversation.route.js"));
-const getAllChatAssets_route_1 = __importDefault(require("./routes/chat/getAllChatAssets.route.js"));
-const getClientAccessToken_route_1 = __importDefault(require("./routes/chat/getClientAccessToken.route.js"));
-const getHostAccessToken_route_1 = __importDefault(require("./routes/chat/getHostAccessToken.route.js"));
-const message_route_1 = require("./routes/chat/message.route.js");
-const copyTuroVehicleData_route_1 = require("./routes/turo/copyTuroVehicleData.route.js");
-const webhook_route_1 = __importDefault(require("./routes/webhook/webhook.route.js"));
+import { getAllChatHistoryFluxRouter, getAllChatHistoryRouter } from '@/routes/chat/chatHistory.route';
+import createConversationRouter from '@/routes/chat/createConversation.route';
+import getAllChatAssetsRouter from '@/routes/chat/getAllChatAssets.route';
+import getClientAccessTokenRouter from '@/routes/chat/getClientAccessToken.route';
+import getHostAccessTokenRouter from '@/routes/chat/getHostAccessToken.route';
+import { clientSendMessageFluxRouter, clientSendMessageRouter, hostSendMessageRouter, systemSendMessageRouter } from '@/routes/chat/message.route';
+import { copyTuroVehicleDataRouter, copyTuroVehicleDataServerlessRouter } from '@/routes/turo/copyTuroVehicleData.route';
+import webhookRouter from '@/routes/webhook/webhook.route';
 // This file is used to export all routes
-const express_1 = require("express");
-const insurance_route_1 = __importDefault(require("./routes/insurance/insurance.route.js"));
-const firebaseUser_route_1 = require("./routes/others/firebaseUser.route.js");
-const getVehicleSpecificDates_route_1 = __importDefault(require("./routes/others/getVehicleSpecificDates.route.js"));
-const latLongToZipCodes_1 = require("./routes/others/latLongToZipCodes.js");
-const timeConversion_route_1 = __importDefault(require("./routes/others/timeConversion.route.js"));
-const mainRouter = (0, express_1.Router)();
+import { Router } from 'express';
+import priceCalculationRouter from './routes/booking/priceCalculation.route';
+import insuranceRouter from './routes/insurance/insurance.route';
+import firebaseRouter from './routes/others/firebaseUser.route';
+import getVehicleSpecificDatesRouter from './routes/others/getVehicleSpecificDates.route';
+import { getByZipCodeRouter, getZipCodeRouter } from './routes/others/latLongToZipCodes';
+import timeConversionRouter from './routes/others/timeConversion.route';
+const mainRouter = Router();
 // Chat
-mainRouter.use('/createConversation', createConversation_route_1.default);
-mainRouter.use('/getAllChatAssets', getAllChatAssets_route_1.default);
-mainRouter.use('/getHostAccessToken', getHostAccessToken_route_1.default);
-mainRouter.use('/getClientAccessToken', getClientAccessToken_route_1.default);
-mainRouter.use('/clientSendMessage', message_route_1.clientSendMessageRouter);
-mainRouter.use('/hostSendMessage', message_route_1.hostSendMessageRouter);
-mainRouter.use('/systemSendMessage', message_route_1.systemSendMessageRouter);
-mainRouter.use('/clientSendMessageFlux', message_route_1.clientSendMessageFluxRouter);
-mainRouter.use('/getAllChatHistory', chatHistory_route_1.getAllChatHistoryRouter);
-mainRouter.use('/getAllChatHistoryFlux', chatHistory_route_1.getAllChatHistoryFluxRouter);
+mainRouter.use('/createConversation', createConversationRouter);
+mainRouter.use('/getAllChatAssets', getAllChatAssetsRouter);
+mainRouter.use('/getHostAccessToken', getHostAccessTokenRouter);
+mainRouter.use('/getClientAccessToken', getClientAccessTokenRouter);
+mainRouter.use('/clientSendMessage', clientSendMessageRouter);
+mainRouter.use('/hostSendMessage', hostSendMessageRouter);
+mainRouter.use('/systemSendMessage', systemSendMessageRouter);
+mainRouter.use('/clientSendMessageFlux', clientSendMessageFluxRouter);
+mainRouter.use('/getAllChatHistory', getAllChatHistoryRouter);
+mainRouter.use('/getAllChatHistoryFlux', getAllChatHistoryFluxRouter);
 // Turo
-mainRouter.use('/copyTuroVehicleData', copyTuroVehicleData_route_1.copyTuroVehicleDataRouter);
-mainRouter.use('/copyTuroVehicleDataServerless', copyTuroVehicleData_route_1.copyTuroVehicleDataServerlessRouter);
+mainRouter.use('/copyTuroVehicleData', copyTuroVehicleDataRouter);
+mainRouter.use('/copyTuroVehicleDataServerless', copyTuroVehicleDataServerlessRouter);
 // Firebase user management
-mainRouter.use('/createUser', firebaseUser_route_1.createUserRouter);
-mainRouter.use('/updateUser', firebaseUser_route_1.updateUserRouter);
-mainRouter.use('/getUserByEmail', firebaseUser_route_1.getUserByEmailRouter);
-mainRouter.use('/verifyUserToken', firebaseUser_route_1.verfiyUserTokenRouter);
+mainRouter.use('/', firebaseRouter);
+// Booking
+mainRouter.use('/api/v1/priceCalculation', priceCalculationRouter);
 // Time Conversion
-mainRouter.use('/api/v1/timeConversions', timeConversion_route_1.default);
-mainRouter.use('/getVehicleSpecificDates', getVehicleSpecificDates_route_1.default);
-mainRouter.use('/api/v1/availability/getZipCode', latLongToZipCodes_1.getZipCodeRouter);
-mainRouter.use('/api/v1/availability/getByZipCode', latLongToZipCodes_1.getByZipCodeRouter);
+mainRouter.use('/api/v1/timeConversions', timeConversionRouter);
+mainRouter.use('/getVehicleSpecificDates', getVehicleSpecificDatesRouter);
+mainRouter.use('/api/v1/availability/getZipCode', getZipCodeRouter);
+mainRouter.use('/api/v1/availability/getByZipCode', getByZipCodeRouter);
 // Insurance
-mainRouter.use('/webhook', webhook_route_1.default);
-mainRouter.use('/api/v1/createNewIndividual', insurance_route_1.default);
-exports.default = mainRouter;
+mainRouter.use('/api/v1/insurance/webhook', webhookRouter);
+mainRouter.use('/api/v1/insurance', insuranceRouter);
+export default mainRouter;
 //# sourceMappingURL=mainRouter.js.map

@@ -1,4 +1,4 @@
-interface VehicleFeatures {
+export interface VehicleFeatures {
     id: number;
     vin: string;
     make: string;
@@ -71,3 +71,54 @@ interface VehicleFeatures {
     isDiscountAvailable?: boolean;
     [key: string]: any; // Catch-all for additional keys with uncertain types
 }
+
+export interface CreateNewIndividualPayload {
+    first_name: string;
+    last_name: string;
+    email: string;
+    external_id: string;
+    phone_number: string;
+    address?: {
+        addr1: string;
+        addr2?: string;
+        city?: string;
+        state_name?: string;
+        zipcode: string;
+        country: string;
+    };
+}
+
+export interface ExtractPolicyDetails {
+    policyNumber: string;
+    startDate: string;
+    expiryDate: string;
+    policyHolders: {
+        name: string;
+        address: {
+            addr1: string;
+            addr2?: string;
+            city?: string;
+            state?: string;
+            zipcode: string;
+        };
+    }[];
+    insuranceProvider: {
+        name: string;
+        phoneNumber: string;
+        address: {
+            addr1: string;
+            addr2?: string;
+            city?: string;
+            state?: string;
+            zipcode: string;
+        };
+    };
+    coverages: any;
+}
+
+export const insranceVerificationStatus = {
+    NOT_VERIFIED: 'notVerified',
+    IN_PROGRESS: 'inProgress',
+    VERIFIED: 'verified',
+    FAILED: 'failed'
+};

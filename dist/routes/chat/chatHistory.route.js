@@ -1,23 +1,15 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllChatHistoryFluxRouter = exports.getAllChatHistoryRouter = void 0;
-const chatHistory_controller_1 = require("../../controllers/chat/chatHistory.controller.js");
-const passwordAuth_middleware_1 = require("../../middlewares/passwordAuth.middleware.js");
-const tokenAuth_middleware_1 = __importDefault(require("../../middlewares/tokenAuth.middleware.js"));
-const zodValidate_1 = require("../../utils/zodValidate.js");
-const express_1 = __importDefault(require("express"));
-const zod_1 = require("zod");
-const schema = zod_1.z.object({
-    tripId: zod_1.z.number({ required_error: 'Trip ID is required', invalid_type_error: 'Trip ID must be a number' }),
-    count: zod_1.z.number({ required_error: 'Count is required', invalid_type_error: 'Count must be a number' }).default(100)
+import { chatHistory } from '@/controllers/chat/chatHistory.controller';
+import { passwordAuth } from '@/middlewares/passwordAuth.middleware';
+import tokenAuth from '@/middlewares/tokenAuth.middleware';
+import { zodValidate } from '@/utils/zodValidate';
+import express from 'express';
+import { z } from 'zod';
+const schema = z.object({
+    tripId: z.number({ required_error: 'Trip ID is required', invalid_type_error: 'Trip ID must be a number' }),
+    count: z.number({ required_error: 'Count is required', invalid_type_error: 'Count must be a number' }).default(100)
 });
-const getAllChatHistoryRouter = express_1.default.Router();
-exports.getAllChatHistoryRouter = getAllChatHistoryRouter;
-const getAllChatHistoryFluxRouter = express_1.default.Router();
-exports.getAllChatHistoryFluxRouter = getAllChatHistoryFluxRouter;
+const getAllChatHistoryRouter = express.Router();
+const getAllChatHistoryFluxRouter = express.Router();
 /**
  * @swagger
  * /getAllChatHistory:
@@ -59,7 +51,7 @@ exports.getAllChatHistoryFluxRouter = getAllChatHistoryFluxRouter;
  *       500:
  *         description: Server error
  * */
-getAllChatHistoryRouter.post('/', tokenAuth_middleware_1.default, (0, zodValidate_1.zodValidate)(schema), chatHistory_controller_1.chatHistory);
+getAllChatHistoryRouter.post('/', tokenAuth, zodValidate(schema), chatHistory);
 /**
  * @swagger
  * /getAllChatHistoryFlux:
@@ -94,5 +86,6 @@ getAllChatHistoryRouter.post('/', tokenAuth_middleware_1.default, (0, zodValidat
  *       500:
  *         description: Server error
  * */
-getAllChatHistoryFluxRouter.post('/', passwordAuth_middleware_1.passwordAuth, (0, zodValidate_1.zodValidate)(schema), chatHistory_controller_1.chatHistory);
+getAllChatHistoryFluxRouter.post('/', passwordAuth, zodValidate(schema), chatHistory);
+export { getAllChatHistoryRouter, getAllChatHistoryFluxRouter };
 //# sourceMappingURL=chatHistory.route.js.map

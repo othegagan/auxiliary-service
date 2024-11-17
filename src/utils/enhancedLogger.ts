@@ -5,10 +5,10 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 const { combine, timestamp, json, colorize, printf, errors } = format;
 
 // Custom format for console logging with colors
-const consoleLogFormat = printf(({ level, message, timestamp, method, url, params, query, body, statusCode, responseBody, ...metadata }) => {
+const consoleLogFormat = printf(({ level, message, timestamp, method, fullUrl, params, query, body, statusCode, responseBody, ...metadata }) => {
     let msg = `${timestamp} ${level}: ${message}`;
     if (method) msg += `\nmethod: ${method}`;
-    if (url) msg += `\nurl: ${url}`;
+    if (fullUrl) msg += `\nurl: ${fullUrl}`; // Full URL instead of path
     if (params) msg += `\nparams: ${JSON.stringify(params)}`;
     if (query) msg += `\nquery: ${JSON.stringify(query)}`;
     if (body) msg += `\nbody: ${JSON.stringify(body)}`;
@@ -53,6 +53,9 @@ export const morganMiddleware = morgan(morganFormat, {
     }
 });
 
+// Helper to construct full URL
+const getFullUrl = (req: any) => `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+
 // Extend logger object with custom methods
 const enhancedLogger = {
     ...logger,
@@ -70,7 +73,7 @@ const enhancedLogger = {
     logRequest: (req: any) => {
         logger.info('Incoming request', {
             method: req.method,
-            url: req.url,
+            fullUrl: getFullUrl(req), // Log full URL here
             params: req.params,
             query: req.query,
             body: req.body
@@ -86,7 +89,7 @@ const enhancedLogger = {
     logRequestResponse: (req: any, res: any, responseBody: any) => {
         logger.info('Request-Response', {
             method: req.method,
-            url: req.url,
+            fullUrl: getFullUrl(req), // Use full URL here
             params: req.params,
             query: req.query,
             body: req.body,

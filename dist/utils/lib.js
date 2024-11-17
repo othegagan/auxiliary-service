@@ -1,20 +1,12 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.convertToTimeZoneISO = convertToTimeZoneISO;
-exports.formatDateAndTime = formatDateAndTime;
-exports.findTimeZoneByZipcode = findTimeZoneByZipcode;
-exports.findTimezoneOfLatLong = findTimezoneOfLatLong;
-exports.findNearByZipcodesByLatLong = findNearByZipcodesByLatLong;
-exports.findZipcodeOfLatLong = findZipcodeOfLatLong;
-const date_1 = require("@internationalized/date");
-const gps2zip_1 = __importDefault(require("gps2zip"));
-const moment_timezone_1 = __importDefault(require("moment-timezone"));
-const tz_lookup_1 = __importDefault(require("tz-lookup"));
-const zipcode_to_timezone_1 = __importDefault(require("zipcode-to-timezone"));
-const zipcodes_nearby_1 = __importDefault(require("zipcodes-nearby"));
+import { parseZonedDateTime } from '@internationalized/date';
+import CryptoJS from 'crypto-js';
+import gps from 'gps2zip';
+import moment from 'moment-timezone';
+import tzlookup from 'tz-lookup';
+import zipToTimeZone from 'zipcode-to-timezone';
+import zipCodesNearby from 'zipcodes-nearby';
+const key = CryptoJS.enc.Utf8.parse('4f1aaae66406e358');
+const iv = CryptoJS.enc.Utf8.parse('df1e180949793972');
 /**
  * Converts a given date and time to ISO format in the timezone of the specified zip code.
  *
@@ -23,7 +15,7 @@ const zipcodes_nearby_1 = __importDefault(require("zipcodes-nearby"));
  * @returns The converted date and time in ISO format with the zipcode's timezone.
  * @throws Error if the timezone cannot be determined from the zip code or if the date is invalid.
  */
-function convertToTimeZoneISO(dateTime, zipCode) {
+export function convertToTimeZoneISO(dateTime, zipCode) {
     if (!dateTime || !zipCode) {
         throw new Error('Both dateTime and zipCode are required');
     }
@@ -32,7 +24,7 @@ function convertToTimeZoneISO(dateTime, zipCode) {
         throw new Error(`Unable to determine timezone for zip code: ${zipCode}`);
     }
     try {
-        const zonedDateTime = (0, date_1.parseZonedDateTime)(`${dateTime}[${timeZone}]`);
+        const zonedDateTime = parseZonedDateTime(`${dateTime}[${timeZone}]`);
         return zonedDateTime.toAbsoluteString();
     }
     catch (error) {
@@ -47,10 +39,10 @@ function convertToTimeZoneISO(dateTime, zipCode) {
  * @param format - Desired format of the converted date. ex: 'yyyy-MM-DD'. or 'YYYY-MM-DDTHH:mm:ss'
  * @returns The converted date and time in local zipcode time zone format.
  */
-function formatDateAndTime(date, zipCode, format = 'ddd, MMM DD YYYY | h:mm A z') {
+export function formatDateAndTime(date, zipCode, format = 'ddd, MMM DD YYYY | h:mm A z') {
     if (!date || !zipCode)
         return '';
-    const endTimeUTC = moment_timezone_1.default.utc(date);
+    const endTimeUTC = moment.utc(date);
     const timeZone = findTimeZoneByZipcode(zipCode);
     const timeInTimeZone = endTimeUTC.tz(timeZone);
     return timeInTimeZone.format(format || 'ddd, MMM DD YYYY | h:mm A z');
@@ -62,8 +54,8 @@ function formatDateAndTime(date, zipCode, format = 'ddd, MMM DD YYYY | h:mm A z'
  * @returns timezone of the zip code.
  * @returns null if the timezone cannot be determined from the zip code.
  */
-function findTimeZoneByZipcode(zipCode) {
-    const timeZone = zipcode_to_timezone_1.default.lookup(zipCode); // 73301, (Los angeles zip code : 90274) (MST : 85323)
+export function findTimeZoneByZipcode(zipCode) {
+    const timeZone = zipToTimeZone.lookup(zipCode); // 73301, (Los angeles zip code : 90274) (MST : 85323)
     return timeZone || null;
 }
 /**
@@ -74,10 +66,10 @@ function findTimeZoneByZipcode(zipCode) {
  * @returns timezone of the location.
  * @returns null if the timezone cannot be determined from the location.
  */
-function findTimezoneOfLatLong(latitude, longitude) {
+export function findTimezoneOfLatLong(latitude, longitude) {
     if (!latitude || !longitude)
         return '';
-    const timeZone = (0, tz_lookup_1.default)(latitude, longitude);
+    const timeZone = tzlookup(latitude, longitude);
     return timeZone || null;
 }
 /**
@@ -88,7 +80,7 @@ function findTimezoneOfLatLong(latitude, longitude) {
  * @returns near by zip codes.
  * @returns empty array if the zip codes cannot be determined from the location.
  */
-function findNearByZipcodesByLatLong(latitude, longitude) {
+export function findNearByZipcodesByLatLong(latitude, longitude) {
     if (!latitude || !longitude)
         return [];
     const options = {
@@ -96,7 +88,7 @@ function findNearByZipcodesByLatLong(latitude, longitude) {
         latitude
     };
     const radius = 24000;
-    const nearbyZipcodes = zipcodes_nearby_1.default.near(options, radius);
+    const nearbyZipcodes = zipCodesNearby.near(options, radius);
     return nearbyZipcodes || [];
 }
 /**
@@ -107,10 +99,54 @@ function findNearByZipcodesByLatLong(latitude, longitude) {
  * @returns zip code of a lat long.the location.
  * @returns null if the zip code cannot be determined from the location.
  */
-function findZipcodeOfLatLong(latitude, longitude) {
+export function findZipcodeOfLatLong(latitude, longitude) {
     if (!latitude || !longitude)
         return '';
-    const zipCode = gps2zip_1.default.gps2zip(latitude, longitude);
+    const zipCode = gps.gps2zip(latitude, longitude);
     return zipCode || null;
 }
+/**
+ * Encrypts the str using AES algorithm
+ *
+ * @param str - The string to be encrypted
+ * @returns The encrypted string
+ */
+export const encryptData = (str) => {
+    try {
+        const encrypted = CryptoJS.AES.encrypt(str, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        const encryptedText = encrypted.toString();
+        return encryptedText;
+    }
+    catch (error) {
+        console.error('Encryption Error:', error);
+        return null;
+    }
+};
+/**
+ * Decrypts the cipherText using AES algorithm
+ *
+ * @param cipherText - The cipherText to be decrypted
+ * @returns The decrypted string
+ */
+export const decryptData = (cipherText) => {
+    try {
+        if (!cipherText)
+            return null;
+        const decrypted = CryptoJS.AES.decrypt(cipherText, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        const decryptedString = CryptoJS.enc.Utf8.stringify(decrypted);
+        return decryptedString;
+    }
+    catch (error) {
+        console.error('Decryption Error:', error);
+        return null;
+    }
+};
 //# sourceMappingURL=lib.js.map

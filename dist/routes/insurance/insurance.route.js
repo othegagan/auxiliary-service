@@ -1,20 +1,77 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const insurance_controller_1 = require("../../controllers/insurance/insurance.controller.js");
-const zodValidate_1 = require("../../utils/zodValidate.js");
-const express_1 = __importDefault(require("express"));
-const zod_1 = require("zod");
-const insuranceRouter = express_1.default.Router();
-const schema = zod_1.z.object({
-    firstName: zod_1.z.string({ required_error: 'First name is required' }),
-    lastName: zod_1.z.string({ required_error: 'Last name is required' }),
-    email: zod_1.z.string().email(),
-    externalId: zod_1.z.string().optional(),
-    phoneNumber: zod_1.z.string({ invalid_type_error: 'Invalid phone number' }).optional()
-});
-insuranceRouter.post('/', (0, zodValidate_1.zodValidate)(schema), insurance_controller_1.createNewIndividual);
-exports.default = insuranceRouter;
+import { createNewDataRequestIdController, generateDataRequestLinkController, getItemsOfIndividualOnDataRequestController } from '@/controllers/insurance/insurance.controller';
+import express from 'express';
+const insuranceRouter = express.Router();
+/**
+ * @swagger
+ * /api/v1/insurance/datarequests/new:
+ *   get:
+ *     summary: Create a new data request id and public access token
+ *     tags: [Insurance]
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: number
+ *           description: Bundee user ID
+ *     responses:
+ *       200:
+ *         description: Successful response with data request link of MeasureOne site
+ *       400:
+ *         description: Bad request (invalid input)
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+insuranceRouter.get('/datarequests/new', createNewDataRequestIdController);
+/**
+ * @swagger
+ * /api/v1/insurance/datarequests/generate_invitation_link:
+ *   get:
+ *     summary: Create a new data request link
+ *     tags: [Insurance]
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: number
+ *           description: Bundee user ID
+ *     responses:
+ *       200:
+ *         description: Successful response with data request link of MeasureOne site
+ *       400:
+ *         description: Bad request (invalid input)
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+insuranceRouter.get('/datarequests/generate_invitation_link', generateDataRequestLinkController);
+/**
+ * @swagger
+ * /api/v1/insurance/datarequests/get_items:
+ *   get:
+ *     summary: Get items of individual on data request
+ *     tags: [Insurance]
+ *     parameters:
+ *       - in: query
+ *         name: datarequestId
+ *         required: true
+ *         schema:
+ *           type: number
+ *           description: Get items of individual on data request
+ *     responses:
+ *       200:
+ *         description: Successful response with item details
+ *       400:
+ *         description: Bad request (invalid input)
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+insuranceRouter.get('/datarequests/get_items', getItemsOfIndividualOnDataRequestController);
+export default insuranceRouter;
 //# sourceMappingURL=insurance.route.js.map

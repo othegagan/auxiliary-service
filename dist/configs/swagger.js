@@ -1,13 +1,6 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.specs = exports.swaggerUi = void 0;
-const swagger_autogen_1 = __importDefault(require("swagger-autogen"));
-const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
-const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
-exports.swaggerUi = swagger_ui_express_1.default;
+import swaggerAutogen from 'swagger-autogen';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 const options = {
     definition: {
         openapi: '3.0.0',
@@ -18,12 +11,16 @@ const options = {
         },
         servers: [
             {
-                url: 'https://auxiliary-service.onrender.com/',
-                description: 'Deployed Dev Environment'
+                url: 'https://bundee-auxiliary-services-dev.azurewebsites.net/',
+                description: 'Deployed DEV on AZURE Environment'
             },
             {
-                url: `http://localhost:${process.env.PORT || 3000}`,
-                description: 'Development server'
+                url: 'https://bundee-auxiliary-services-qa.azurewebsites.net/',
+                description: 'Deployed QA on AZURE Environment'
+            },
+            {
+                url: 'http://localhost:8000',
+                description: 'Dev Localhost'
             }
         ],
         components: {
@@ -38,9 +35,9 @@ const options = {
     },
     apis: ['./src/routes/**/*.ts'] // Path to the API docs
 };
-const specs = (0, swagger_jsdoc_1.default)(options);
-exports.specs = specs;
+const specs = swaggerJsdoc(options);
 const outputFile = './src/configs/swagger-output.json';
 const endpointsFiles = ['./src/mainRouter.ts'];
-(0, swagger_autogen_1.default)()(outputFile, endpointsFiles, options.definition);
+swaggerAutogen()(outputFile, endpointsFiles, options.definition);
+export { specs, swaggerUi };
 //# sourceMappingURL=swagger.js.map

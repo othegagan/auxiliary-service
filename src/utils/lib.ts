@@ -1,9 +1,13 @@
 import { parseZonedDateTime } from '@internationalized/date';
+import CryptoJS from 'crypto-js';
 import gps from 'gps2zip';
 import moment from 'moment-timezone';
 import tzlookup from 'tz-lookup';
 import zipToTimeZone from 'zipcode-to-timezone';
 import zipCodesNearby from 'zipcodes-nearby';
+
+const key = CryptoJS.enc.Utf8.parse('4f1aaae66406e358');
+const iv = CryptoJS.enc.Utf8.parse('df1e180949793972');
 
 /**
  * Converts a given date and time to ISO format in the timezone of the specified zip code.
@@ -106,3 +110,48 @@ export function findZipcodeOfLatLong(latitude: number, longitude: number) {
     const zipCode = gps.gps2zip(latitude, longitude);
     return zipCode || null;
 }
+
+/**
+ * Encrypts the str using AES algorithm
+ *
+ * @param str - The string to be encrypted
+ * @returns The encrypted string
+ */
+export const encryptData = (str: string | CryptoJS.lib.WordArray): any => {
+    try {
+        const encrypted = CryptoJS.AES.encrypt(str, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        const encryptedText = encrypted.toString();
+
+        return encryptedText;
+    } catch (error) {
+        console.error('Encryption Error:', error);
+        return null;
+    }
+};
+
+/**
+ * Decrypts the cipherText using AES algorithm
+ *
+ * @param cipherText - The cipherText to be decrypted
+ * @returns The decrypted string
+ */
+export const decryptData = (cipherText: string | CryptoJS.lib.CipherParams) => {
+    try {
+        if (!cipherText) return null;
+        const decrypted = CryptoJS.AES.decrypt(cipherText, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        const decryptedString = CryptoJS.enc.Utf8.stringify(decrypted);
+
+        return decryptedString;
+    } catch (error) {
+        console.error('Decryption Error:', error);
+        return null;
+    }
+};

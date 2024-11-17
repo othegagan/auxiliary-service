@@ -1,13 +1,7 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.copyTuroVehicleDataServerless = exports.copyTuroVehicleData = void 0;
-const logger_1 = __importDefault(require("../../utils/logger.js"));
+import logger from '@/utils/logger';
 // import Nightmare from 'nightmare';
-const puppeteer_1 = __importDefault(require("puppeteer"));
-const copyTuroVehicleData = async (req, res) => {
+import puppeteer from 'puppeteer';
+export const copyTuroVehicleData = async (req, res) => {
     try {
         const { turolink } = req.body;
         // const nightmare = new Nightmare({ show: false });
@@ -40,15 +34,14 @@ const copyTuroVehicleData = async (req, res) => {
         res.status(200).json({ response: 'ok' });
     }
     catch (error) {
-        logger_1.default.error(`Scraping failed: ${error}`);
+        logger.error(`Scraping failed: ${error}`);
         res.status(500).json({ response: error });
     }
 };
-exports.copyTuroVehicleData = copyTuroVehicleData;
-const copyTuroVehicleDataServerless = async (req, res) => {
+export const copyTuroVehicleDataServerless = async (req, res) => {
     try {
         const { turolink } = req.body;
-        const browser = await puppeteer_1.default.launch();
+        const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.goto(turolink);
         // Example: Extract text from an element
@@ -59,9 +52,8 @@ const copyTuroVehicleDataServerless = async (req, res) => {
         res.status(200).json({ content });
     }
     catch (error) {
-        logger_1.default.error(`Scraping failed: ${error}`);
+        logger.error(`Scraping failed: ${error}`);
         res.status(500).json({ response: error });
     }
 };
-exports.copyTuroVehicleDataServerless = copyTuroVehicleDataServerless;
 //# sourceMappingURL=copyTuroVehicleData.controller.js.map

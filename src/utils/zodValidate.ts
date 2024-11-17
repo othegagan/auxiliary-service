@@ -35,3 +35,22 @@ export const zodValidate = <T extends AnyZodObject>(schema: T) => {
         }
     };
 };
+
+// Middleware for validating request query parameters with Zod schema
+export const zodValidateQuery = <T extends AnyZodObject>(schema: T) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            // Validate `req.query` against the Zod schema
+            const validatedData = (await schema.parseAsync(req.query)) as z.infer<T>;
+            req.validatedData = validatedData; // Attach validated data to req object
+            next(); // Move to the next middleware/controller
+        } catch (error) {
+            if (error instanceof ZodError) {
+                const errorMessages = formatZodErrors(error);
+                next(new ApiError(400, 'Validation failed', errorMessages)); // Send a 400 Bad Request error
+            } else {
+                next(new ApiError(500, 'Internal Server Error')); // Send a 500 Internal Server Error
+            }
+        }
+    };
+};

@@ -1,41 +1,52 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.env = void 0;
-const dotenv_1 = require("dotenv");
-const zod_1 = require("zod");
+import { config } from 'dotenv';
+import { z } from 'zod';
 // Load environment variables based on NODE_ENV
-const envFile = `.env.${process.env.NODE_ENV}`;
-(0, dotenv_1.config)({ path: envFile });
-const envSchema = zod_1.z.object({
-    PORT: zod_1.z.coerce.number(),
-    NODE_ENV: zod_1.z.union([zod_1.z.literal('development'), zod_1.z.literal('qa'), zod_1.z.literal('production')]),
-    PASSWORD: zod_1.z.string(),
+const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
+config({ path: envFile });
+const envSchema = z.object({
+    PORT: z.coerce.number().min(1, 'PORT must be a valid number'),
+    NODE_ENV: z.union([z.literal('development'), z.literal('qa'), z.literal('production')]),
+    PASSWORD: z.string().min(1, 'PASSWORD is required'),
     // Firebase configuration
-    FIREBASE_PROJECT_ID: zod_1.z.string(),
-    FIREBASE_CLIENT_EMAIL: zod_1.z.string(),
-    FIREBASE_PRIVATE_KEY: zod_1.z.string(),
-    FIREBASE_CLIENT_ID: zod_1.z.string(),
-    FIREBASE_CLIENT_X509_CERT_URL: zod_1.z.string(),
-    FIREBASE_PRIVATE_KEY_ID: zod_1.z.string(),
+    FIREBASE_PROJECT_ID: z.string().min(1, 'FIREBASE_PROJECT_ID is required'),
+    FIREBASE_CLIENT_EMAIL: z.string().email('FIREBASE_CLIENT_EMAIL must be a valid email'),
+    FIREBASE_PRIVATE_KEY: z.string().min(1, 'FIREBASE_PRIVATE_KEY is required'),
+    FIREBASE_CLIENT_ID: z.string().min(1, 'FIREBASE_CLIENT_ID is required'),
+    FIREBASE_CLIENT_X509_CERT_URL: z.string().url('FIREBASE_CLIENT_X509_CERT_URL must be a valid URL'),
+    FIREBASE_PRIVATE_KEY_ID: z.string().min(1, 'FIREBASE_PRIVATE_KEY_ID is required'),
     // Twilio configuration
-    TWILIO_ACCOUNT_SID: zod_1.z.string(),
-    TWILIO_AUTH_TOKEN: zod_1.z.string(),
-    TWILIO_API_SECRET: zod_1.z.string(),
-    TWILIO_API_KEY: zod_1.z.string(),
+    TWILIO_ACCOUNT_SID: z.string().min(1, 'TWILIO_ACCOUNT_SID is required'),
+    TWILIO_AUTH_TOKEN: z.string().min(1, 'TWILIO_AUTH_TOKEN is required'),
+    TWILIO_API_SECRET: z.string().min(1, 'TWILIO_API_SECRET is required'),
+    TWILIO_API_KEY: z.string().min(1, 'TWILIO_API_KEY is required'),
     // Bunbee configuration
-    ENV_PREFIX: zod_1.z.string(),
-    BUNDEE_AUTH_TOKEN: zod_1.z.string(),
-    BUNDEE_BOOKING_SERVICE_BASE_URL: zod_1.z.string(),
-    BUNDEE_HOST_VEHICLE_BASE_URL: zod_1.z.string(),
-    BUNDEE_AVAILABILITY_SERVICE_BASE_URL: zod_1.z.string(),
-    // MeasureOne congfiguration
-    MEASUREONE_BASE_URL: zod_1.z.string(),
-    MEASUREONE_BRARER_TOKEN: zod_1.z.string(),
-    MEASUREONE_API_VERSION: zod_1.z.string(),
+    ENV_PREFIX: z.string().min(1, 'ENV_PREFIX is required'),
+    BUNDEE_AUTH_TOKEN: z.string().min(1, 'BUNDEE_AUTH_TOKEN is required'),
+    BUNDEE_BOOKING_SERVICE_BASE_URL: z.string().url('BUNDEE_BOOKING_SERVICE_BASE_URL must be a valid URL'),
+    BUNDEE_HOST_VEHICLE_BASE_URL: z.string().url('BUNDEE_HOST_VEHICLE_BASE_URL must be a valid URL'),
+    BUNDEE_AVAILABILITY_SERVICE_BASE_URL: z.string().url('BUNDEE_AVAILABILITY_SERVICE_BASE_URL must be a valid URL'),
+    BUNDEE_USER_MANAGEMENT_BASE_URL: z.string().url('BUNDEE_USER_MANAGEMENT_BASE_URL must be a valid URL'),
+    // MeasureOne configuration
+    MEASUREONE_BASE_URL: z.string().url('MEASUREONE_BASE_URL must be a valid URL'),
+    MEASUREONE_CLIENT_ID: z.string().min(1, 'MEASUREONE_CLIENT_ID is required'),
+    MEASUREONE_SECRET: z.string().min(1, 'MEASUREONE_SECRET is required'),
+    MEASUREONE_API_VERSION: z.string().min(1, 'MEASUREONE_API_VERSION is required'),
+    WEBHOOK_URL: z.string().url('WEBHOOK_URL must be a valid URL'),
     // Stripe configuration
-    STRIPE_BASE_URL: zod_1.z.string(),
-    STRIPE_SECRET_KEY: zod_1.z.string(),
-    STRIPE_PUBLISHABLE_KEY: zod_1.z.string()
+    STRIPE_BASE_URL: z.string().url('STRIPE_BASE_URL must be a valid URL'),
+    STRIPE_SECRET_KEY: z.string().min(1, 'STRIPE_SECRET_KEY is required'),
+    STRIPE_PUBLISHABLE_KEY: z.string().min(1, 'STRIPE_PUBLISHABLE_KEY is required')
 });
-exports.env = envSchema.parse(process.env);
+// Use "env!" to indicate that `env` will be initialized
+let env;
+try {
+    env = envSchema.parse(process.env);
+}
+catch (error) {
+    if (error instanceof z.ZodError) {
+        console.error('Environment validation error:', error.errors);
+        process.exit(1); // Exit the process if env validation fails
+    }
+}
+export { env };
 //# sourceMappingURL=env.js.map

@@ -1,14 +1,10 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const EmailTime_controller_1 = require("../../controllers/timeConversions/EmailTime.controller.js");
-const searchTime_controller_1 = require("../../controllers/timeConversions/searchTime.controller.js");
-const turoTime_controller_1 = require("../../controllers/timeConversions/turoTime.controller.js");
-const zodValidate_1 = require("../../utils/zodValidate.js");
-const express_1 = __importDefault(require("express"));
-const zod_1 = require("zod");
+import { getVehicleSpecificDatesController } from '@/controllers/others/getVehicleSpecificDates.controller';
+import { emailTimeConversionController } from '@/controllers/timeConversions/EmailTime.controller';
+import { searchTimeConversionController } from '@/controllers/timeConversions/searchTime.controller';
+import { turoTimeConversionController } from '@/controllers/timeConversions/turoTime.controller';
+import { zodValidate } from '@/utils/zodValidate';
+import express from 'express';
+import { z } from 'zod';
 /**
  * @swagger
  * components:
@@ -47,6 +43,26 @@ const zod_1 = require("zod");
  *         tripET:
  *           type: string
  *           description: Trip end time
+ *     VehicleSpecificTimeConversion:
+ *       type: object
+ *       required:
+ *         - localDateAndStartTimeArr
+ *         - localDateAndEndTimeArr
+ *         - zipCodeArr
+ *         - localTimeZoneOffsetInMinutes
+ *       properties:
+ *         localDateAndStartTimeArr:
+ *           type: array
+ *           description: Array of Start times
+ *         localDateAndEndTimeArr:
+ *           type: array
+ *           description: Array of End times
+ *         zipCodeArr:
+ *           type: array
+ *           description: Array of coresponding zipcodes
+ *         localTimeZoneOffsetInMinutes:
+ *           type: number
+ *           description: Timezone offset from UTC in minutes
  *     SearchTimeConversion:
  *       type: object
  *       required:
@@ -80,41 +96,13 @@ const zod_1 = require("zod");
  *           type: string
  *           description: Zipcode
  */
-const timeConversionRouter = express_1.default.Router();
-/**
- * @swagger
- * components:
- *   schemas:
- *     TuroTimeConversion:
- *       type: object
- *       required:
- *         - zipCode
- *       properties:
- *         zipCode:
- *           type: string
- *           description: Zipcode
- *         startTS:
- *           type: string
- *           format: date-time
- *           description: Start timestamp in ISO 8601 format
- *         endTS:
- *           type: string
- *           format: date-time
- *           description: End timestamp in ISO 8601 format
- *         turoStartTime:
- *           type: string
- *           description: Turo start time in a specific format
- *         turoEndTime:
- *           type: string
- *           description: Turo end time in a specific format
- *
- */
-const turoTimeConversionSchema = zod_1.z.object({
-    turoStartTime: zod_1.z.string({ required_error: 'Turo start time is required' }).optional(),
-    turoEndTime: zod_1.z.string({ required_error: 'Turo end time is required' }).optional(),
-    zipCode: zod_1.z.string({ required_error: 'Zipcode is required' }),
-    startTS: zod_1.z.string({ invalid_type_error: 'startTS is required' }).optional(),
-    endTS: zod_1.z.string({ invalid_type_error: 'EndTS is required' }).optional()
+const timeConversionRouter = express.Router();
+const turoTimeConversionSchema = z.object({
+    turoStartTime: z.string({ required_error: 'Turo start time is required' }).optional(),
+    turoEndTime: z.string({ required_error: 'Turo end time is required' }).optional(),
+    zipCode: z.string({ required_error: 'Zipcode is required' }),
+    startTS: z.string({ invalid_type_error: 'startTS is required' }).optional(),
+    endTS: z.string({ invalid_type_error: 'EndTS is required' }).optional()
 });
 /**
  * @swagger
@@ -148,11 +136,11 @@ const turoTimeConversionSchema = zod_1.z.object({
  *       400:
  *         description: Bad request
  */
-timeConversionRouter.post('/turoTimeConversion', (0, zodValidate_1.zodValidate)(turoTimeConversionSchema), turoTime_controller_1.turoTimeConversionController);
-const emailTimeConversionSchema = zod_1.z.object({
-    zipCode: zod_1.z.string({ required_error: 'Zipcode is required' }),
-    tripST: zod_1.z.string({ required_error: 'tripST time is required' }),
-    tripET: zod_1.z.string({ required_error: 'tripET time is required' })
+timeConversionRouter.post('/turoTimeConversion', zodValidate(turoTimeConversionSchema), turoTimeConversionController);
+const emailTimeConversionSchema = z.object({
+    zipCode: z.string({ required_error: 'Zipcode is required' }),
+    tripST: z.string({ required_error: 'tripST time is required' }),
+    tripET: z.string({ required_error: 'tripET time is required' })
 });
 /**
  * @swagger
@@ -177,15 +165,15 @@ const emailTimeConversionSchema = zod_1.z.object({
  *       400:
  *         description: Bad request
  */
-timeConversionRouter.post('/emailTimeConversion', (0, zodValidate_1.zodValidate)(emailTimeConversionSchema), EmailTime_controller_1.emailTimeConversionController);
-const searchTimeConversionSchema = zod_1.z.object({
-    latitude: zod_1.z.string({ invalid_type_error: 'Latitude is required' }),
-    longitude: zod_1.z.string({ invalid_type_error: 'Longitude is required' }),
-    startDate: zod_1.z.string({ required_error: 'Start date is required' }),
-    startTime: zod_1.z.string({ required_error: 'Start time is required' }),
-    endDate: zod_1.z.string({ required_error: 'End date is required' }),
-    endTime: zod_1.z.string({ required_error: 'End time is required' }),
-    zipCode: zod_1.z.string({ invalid_type_error: 'Zipcode is required' })
+timeConversionRouter.post('/emailTimeConversion', zodValidate(emailTimeConversionSchema), emailTimeConversionController);
+const searchTimeConversionSchema = z.object({
+    latitude: z.string({ invalid_type_error: 'Latitude is required' }),
+    longitude: z.string({ invalid_type_error: 'Longitude is required' }),
+    startDate: z.string({ required_error: 'Start date is required' }),
+    startTime: z.string({ required_error: 'Start time is required' }),
+    endDate: z.string({ required_error: 'End date is required' }),
+    endTime: z.string({ required_error: 'End time is required' }),
+    zipCode: z.string({ invalid_type_error: 'Zipcode is required' })
 });
 /**
  * @swagger
@@ -226,6 +214,36 @@ const searchTimeConversionSchema = zod_1.z.object({
  *       400:
  *         description: Bad request
  */
-timeConversionRouter.post('/searchTimeConversion', (0, zodValidate_1.zodValidate)(searchTimeConversionSchema), searchTime_controller_1.searchTimeConversionController);
-exports.default = timeConversionRouter;
+timeConversionRouter.post('/searchTimeConversion', zodValidate(searchTimeConversionSchema), searchTimeConversionController);
+const vehicleSpecificDatesSchema = z.object({
+    localDateAndStartTimeArr: z.array(z.string()),
+    localDateAndEndTimeArr: z.array(z.string()),
+    zipCodeArr: z.array(z.string()),
+    localTimeZoneOffsetInMinutes: z.number().optional()
+});
+/**
+ * @swagger
+ * /api/v1/timeConversions/vehicleSpecificTimeConversion:
+ *   post:
+ *     summary: Convert to vehicle specific time
+ *     tags: [Time Conversion]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/VehicleSpecificTimeConversion'
+ *           example:
+ *                 localDateAndStartTimeArr: ["2024-08-29 01:30:00+00"]
+ *                 localDateAndEndTimeArr: ["2024-08-31 01:30:00+00"]
+ *                 zipCodeArr: ["73301"]
+ *                 localTimeZoneOffsetInMinutes: -330
+ *     responses:
+ *       200:
+ *         description: Successful time conversion
+ *       400:
+ *         description: Bad request
+ */
+timeConversionRouter.post('/vehicleSpecificTimeConversion', zodValidate(vehicleSpecificDatesSchema), getVehicleSpecificDatesController);
+export default timeConversionRouter;
 //# sourceMappingURL=timeConversion.route.js.map

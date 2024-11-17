@@ -1,3 +1,4 @@
+import { getVehicleSpecificDatesController } from '@/controllers/others/getVehicleSpecificDates.controller';
 import { emailTimeConversionController } from '@/controllers/timeConversions/EmailTime.controller';
 import { searchTimeConversionController } from '@/controllers/timeConversions/searchTime.controller';
 import { turoTimeConversionController } from '@/controllers/timeConversions/turoTime.controller';
@@ -43,6 +44,26 @@ import { z } from 'zod';
  *         tripET:
  *           type: string
  *           description: Trip end time
+ *     VehicleSpecificTimeConversion:
+ *       type: object
+ *       required:
+ *         - localDateAndStartTimeArr
+ *         - localDateAndEndTimeArr
+ *         - zipCodeArr
+ *         - localTimeZoneOffsetInMinutes
+ *       properties:
+ *         localDateAndStartTimeArr:
+ *           type: array
+ *           description: Array of Start times
+ *         localDateAndEndTimeArr:
+ *           type: array
+ *           description: Array of End times
+ *         zipCodeArr:
+ *           type: array
+ *           description: Array of coresponding zipcodes
+ *         localTimeZoneOffsetInMinutes:
+ *           type: number
+ *           description: Timezone offset from UTC in minutes
  *     SearchTimeConversion:
  *       type: object
  *       required:
@@ -78,34 +99,6 @@ import { z } from 'zod';
  */
 
 const timeConversionRouter = express.Router();
-/**
- * @swagger
- * components:
- *   schemas:
- *     TuroTimeConversion:
- *       type: object
- *       required:
- *         - zipCode
- *       properties:
- *         zipCode:
- *           type: string
- *           description: Zipcode
- *         startTS:
- *           type: string
- *           format: date-time
- *           description: Start timestamp in ISO 8601 format
- *         endTS:
- *           type: string
- *           format: date-time
- *           description: End timestamp in ISO 8601 format
- *         turoStartTime:
- *           type: string
- *           description: Turo start time in a specific format
- *         turoEndTime:
- *           type: string
- *           description: Turo end time in a specific format
- *
- */
 
 const turoTimeConversionSchema = z.object({
     turoStartTime: z.string({ required_error: 'Turo start time is required' }).optional(),
@@ -230,5 +223,37 @@ const searchTimeConversionSchema = z.object({
  *         description: Bad request
  */
 timeConversionRouter.post('/searchTimeConversion', zodValidate(searchTimeConversionSchema), searchTimeConversionController);
+
+const vehicleSpecificDatesSchema = z.object({
+    localDateAndStartTimeArr: z.array(z.string()),
+    localDateAndEndTimeArr: z.array(z.string()),
+    zipCodeArr: z.array(z.string()),
+    localTimeZoneOffsetInMinutes: z.number().optional()
+});
+
+/**
+ * @swagger
+ * /api/v1/timeConversions/vehicleSpecificTimeConversion:
+ *   post:
+ *     summary: Convert to vehicle specific time
+ *     tags: [Time Conversion]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/VehicleSpecificTimeConversion'
+ *           example:
+ *                 localDateAndStartTimeArr: ["2024-08-29 01:30:00+00"]
+ *                 localDateAndEndTimeArr: ["2024-08-31 01:30:00+00"]
+ *                 zipCodeArr: ["73301"]
+ *                 localTimeZoneOffsetInMinutes: -330
+ *     responses:
+ *       200:
+ *         description: Successful time conversion
+ *       400:
+ *         description: Bad request
+ */
+timeConversionRouter.post('/vehicleSpecificTimeConversion', zodValidate(vehicleSpecificDatesSchema), getVehicleSpecificDatesController);
 
 export default timeConversionRouter;
