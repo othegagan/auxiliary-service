@@ -1,3 +1,4 @@
+import { createServer } from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { env } from '@/configs/env';
@@ -6,15 +7,14 @@ import logger from '@/utils/logger';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { type Application } from 'express';
+import { Server } from 'socket.io';
 import { specs, swaggerUi } from './configs/swagger';
+import { initializeSocket } from './controllers/others/drivingLicenceSocket.controller';
 import mainRouter from './mainRouter';
 import getLogsRouter from './routes/getLogs.route';
 import testRouter from './routes/others/test.route';
 import enhancedLogger from './utils/enhancedLogger';
 import { getAppVersion } from './utils/lib';
-import { createServer } from 'node:http';
-import { Server } from 'socket.io';
-import { initializeSocket } from './controllers/others/drivingLicenceSocket.controller';
 
 // Load environment variables based on NODE_ENV
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
