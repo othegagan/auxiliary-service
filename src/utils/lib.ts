@@ -2,6 +2,7 @@ import { parseZonedDateTime } from '@internationalized/date';
 import CryptoJS from 'crypto-js';
 import gps from 'gps2zip';
 import moment from 'moment-timezone';
+import { readPackage } from 'read-pkg';
 import tzlookup from 'tz-lookup';
 import zipToTimeZone from 'zipcode-to-timezone';
 import zipCodesNearby from 'zipcodes-nearby';
@@ -155,3 +156,18 @@ export const decryptData = (cipherText: string | CryptoJS.lib.CipherParams) => {
         return null;
     }
 };
+
+/**
+ * Gets the version of the application.
+ *
+ * @returns The version of the application.
+ */
+export async function getAppVersion() {
+    try {
+        const packageJson = await readPackage();
+        return packageJson.version;
+    } catch (error) {
+        console.error('Error reading package.json:', error);
+        return null;
+    }
+}
