@@ -11,8 +11,6 @@ import mainRouter from './mainRouter';
 import getLogsRouter from './routes/getLogs.route';
 import testRouter from './routes/others/test.route';
 import enhancedLogger from './utils/enhancedLogger';
-import { Server, Socket } from 'socket.io';
-import { v4 as uuidv4 } from 'uuid';
 import { getAppVersion } from './utils/lib';
 
 // Load environment variables based on NODE_ENV

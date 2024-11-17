@@ -12,6 +12,10 @@ const options = {
         },
         servers: [
             {
+                url: 'https://auxiliary-service.onrender.com/',
+                description: 'Alternative DEV '
+            },
+            {
                 url: 'https://bundee-auxiliary-services-dev.azurewebsites.net/',
                 description: 'Deployed DEV on AZURE Environment'
             },
