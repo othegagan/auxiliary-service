@@ -5,77 +5,53 @@ const connections = new Map();
 
 export const initializeSocket = (io: Server) => {
     io.on('connection', (socket: Socket) => {
-        const sessionId = uuidv4();
+        console.log('New connection:', socket.id);
 
-        // Initialize a new session
-        connections.set(sessionId, {
-            desktop: socket,
-            mobile: null,
-            verified: null // Changed to nullable to handle true/false explicitly
-        });
-
-        // Send session ID to desktop client
-        socket.emit(
-            'message',
-            JSON.stringify({
-                type: 'SESSION_ID',
-                sessionId
-            })
-        );
-
-        // Handle incoming messages
         socket.on('message', (rawMessage: string) => {
             try {
-                const data = JSON.parse(rawMessage);
+                const message = JSON.parse(rawMessage);
+                console.log('Received message:', message);
 
-                if (data.type === 'MOBILE_CONNECT' && data.sessionId) {
-                    const session = connections.get(data.sessionId);
-                    if (session) {
-                        session.mobile = socket;
-                        session.desktop.emit(
-                            'message',
-                            JSON.stringify({
-                                type: 'MOBILE_CONNECTED'
-                            })
-                        );
+                switch (message.type) {
+                    case 'DESKTOP_CONNECT': {
+                        const sessionId = uuidv4();
+                        connections.set(sessionId, { desktop: socket, mobile: null });
+                        socket.emit('message', JSON.stringify({ type: 'SESSION_ID', sessionId }));
+                        break;
                     }
-                }
 
-                if (data.type === 'VERIFY_COMPLETE' && data.sessionId) {
-                    const session = connections.get(data.sessionId);
-                    if (session) {
-                        session.verified = true;
-                        session.desktop.emit(
-                            'message',
-                            JSON.stringify({
-                                type: 'VERIFICATION_COMPLETE'
-                            })
-                        );
-                    }
-                }
+                    case 'MOBILE_CONNECT':
+                        if (connections.has(message.sessionId)) {
+                            const session = connections.get(message.sessionId);
+                            session.mobile = socket;
+                            if (session.desktop) {
+                                session.desktop.emit('message', JSON.stringify({ type: 'MOBILE_CONNECTED' }));
+                            }
+                        }
+                        break;
 
-                if (data.type === 'VERIFY_STATUS' && data.sessionId) {
-                    const session = connections.get(data.sessionId);
-                    if (session) {
-                        session.verified = data.verified;
-
-                        // Notify the desktop of the current verification status
-                        session.desktop.emit(
-                            'message',
-                            JSON.stringify({
-                                type: 'VERIFY_STATUS',
-                                verified: data.verified // true or false
-                            })
-                        );
-                    }
+                    case 'VERIFY_STATUS':
+                        if (connections.has(message.sessionId)) {
+                            const session = connections.get(message.sessionId);
+                            if (session.desktop) {
+                                session.desktop.emit(
+                                    'message',
+                                    JSON.stringify({
+                                        type: 'VERIFY_STATUS',
+                                        verified: message.verified
+                                    })
+                                );
+                            }
+                        }
+                        break;
                 }
             } catch (error) {
-                console.error('Error parsing message:', error);
+                console.error('Error processing message:', error);
             }
         });
 
-        // Clean up on disconnect
         socket.on('disconnect', () => {
+            console.log('Disconnected:', socket.id);
             connections.forEach((value, key) => {
                 if (value.desktop === socket || value.mobile === socket) {
                     connections.delete(key);
